@@ -1,0 +1,2 @@
+# Docs
+This is where we will be storing relevant information to how to build the app we will be writing any docs on why the app was built this way in the wiki so please take a look when you get a chance or get curious on design decisions.
