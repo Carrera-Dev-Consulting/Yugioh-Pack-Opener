@@ -1,0 +1,18 @@
+name: Test Frontend
+description: Validates the code in the frontend folder
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: "16"
+
+    - name: Install Dependencies
+      shell: bash
+      working-directory: ./frontend
+      run: yarn install --frozen-lockfile
+
+    - name: Run the test using npm-scripts
+      shell: bash
+      working-directory: ./frontend
+      run: yarn test
