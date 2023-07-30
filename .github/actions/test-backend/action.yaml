@@ -5,7 +5,7 @@ runs:
   steps:
     - name: Go into Backend
       shell: bash
-      run: cd Backend
+      run: cd backend
 
     - uses: actions/setup-python@v4
       with:
