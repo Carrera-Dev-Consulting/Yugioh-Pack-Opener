@@ -3,9 +3,10 @@ from fastapi import FastAPI
 import uvicorn
 
 from app.services.logging import configure_logging
+from .endpoints import api_router
 
 app = FastAPI()
-
+app.include_router(api_router)
 
 def main():
     configure_logging()
