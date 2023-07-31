@@ -6,4 +6,4 @@ api_router = APIRouter()
 
 
 api_router.include_router(system_router)
-api_router.include_router(core_router)
+api_router.include_router(core_router, prefix='/api/v1/')
