@@ -1,4 +1,5 @@
 import click
+import os
 
 from .ygopro_api import YGOProAPIHandler
 
