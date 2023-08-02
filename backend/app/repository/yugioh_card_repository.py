@@ -1,8 +1,25 @@
+from sqlalchemy.orm import joinedload
+
 from .base import Repository
 from app.repository.models.yugioh_card import YugiohCard as YugiohCardORM
-from app.models.yugioh_card import YugiohCard
+from app.models import YugiohCard, YugiohSetInfo
+
+
+def orm_to_domain_model(orm_model: YugiohCardORM) -> YugiohCardORM:
+    card = YugiohCard.model_validate(orm_model)
+    # format the sets to the object model expected for the api.
+    card.sets = [YugiohSetInfo.model_validate(value) for value in card.sets]
+    return card
 
 
 class YugiohCardRepository(Repository):
     def get_all(self) -> list[YugiohCard]:
-        items = self.session.query(YugiohCardORM).all()
+        items: list[YugiohCardORM] = self._query().all()
+        return [orm_to_domain_model(record) for record in items]
+
+    def _query(self):
+        return self.session.query(YugiohCardORM).option(joinedload(YugiohCardORM.sets))
+
+    def query_cards(self, name=None, type=None, **kwargs) -> list[YugiohCard]:
+        # add explicit calls to be able to filter down items to specific models
+        return self.get_all()

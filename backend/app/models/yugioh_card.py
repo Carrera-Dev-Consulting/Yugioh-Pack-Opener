@@ -15,4 +15,4 @@ class YugiohCard(Base):
     description: str
     archetype: str | None
     race: str | None
-    set_info: list[YugiohSetInfo] = []
+    sets: list[YugiohSetInfo] = []
