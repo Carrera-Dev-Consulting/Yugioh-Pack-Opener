@@ -2,8 +2,10 @@ from uuid import UUID
 from .base import Base
 
 
-class SetReference(Base):
-    pass
+class YugiohSetInfo(Base):
+    rarity: str
+    rarity_code: str
+    price: str
 
 
 class YugiohCard(Base):
@@ -13,3 +15,4 @@ class YugiohCard(Base):
     description: str
     archetype: str | None
     race: str | None
+    set_info: list[YugiohSetInfo] = []
