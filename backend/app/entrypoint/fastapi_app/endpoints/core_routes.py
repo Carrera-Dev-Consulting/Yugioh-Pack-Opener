@@ -2,8 +2,7 @@ from fastapi import APIRouter
 
 router = APIRouter()
 
-@router.get('/resource')
+
+@router.get("/resource")
 def get_resource():
-    return {
-        'name': 'resource'
-    }
+    return {"name": "resource"}
