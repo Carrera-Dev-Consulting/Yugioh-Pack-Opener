@@ -1,3 +1,4 @@
+import uuid
 from sqlalchemy import Column, String
 
 from .base import BaseSQLModel
@@ -6,7 +7,7 @@ from .base import BaseSQLModel
 class YugiohCard(BaseSQLModel):
     __tablename__ = "yugioh_cards"
 
-    id = Column(String(36), primary_key=True)
+    id = Column(String(36), primary_key=True, default=uuid.uuid4)
     external_id = Column(
         String(512), nullable=False
     )  # id with whatever datasource we use

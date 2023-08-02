@@ -1,6 +1,7 @@
 import click
 import os
 
+from .db_layer import save_cards_in_database
 from .ygopro_api import YGOProAPIHandler
 
 
@@ -16,6 +17,7 @@ def main(db_url: str, card_json_file: str, card_json_images_directory: str):
 
     for card in cards:
         api_handler.save_card_images(card, card_json_images_directory)
+    save_cards_in_database(cards)
 
 
 if __name__ == "__main__":

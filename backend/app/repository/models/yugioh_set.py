@@ -1,3 +1,4 @@
+import uuid
 from sqlalchemy import Column, String, ForeignKey
 from .base import BaseSQLModel
 from .yugioh_card import YugiohCard
@@ -6,7 +7,7 @@ from .yugioh_card import YugiohCard
 class YugiohSet(BaseSQLModel):
     __tablename__ = "yugioh_sets"
 
-    id = Column(String(36), primary_key=True, nullable=False)
+    id = Column(String(36), primary_key=True, default=uuid.uuid4, nullable=False)
     set_id = Column(String(255), nullable=False)
     name = Column(String(255), nullable=False)
 
