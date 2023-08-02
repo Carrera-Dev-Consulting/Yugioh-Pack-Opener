@@ -27,5 +27,8 @@ services:
     image: mysql:8
     environment:
       - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=yugioh_db
     volumes:
       - mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
