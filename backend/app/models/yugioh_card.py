@@ -3,6 +3,7 @@ from .base import Base
 
 
 class YugiohSetInfo(Base):
+    set_id: str
     rarity: str
     rarity_code: str
     price: str
