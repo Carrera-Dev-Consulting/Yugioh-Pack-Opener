@@ -1,11 +1,6 @@
 venv/
 __pycache__/
 .pytest_cache/
-<<<<<<< HEAD
 cards/
 sets/
 api-responses/
-=======
-cards.json
-cards/
->>>>>>> a07ceed (wip: getting data from api and setting up db stuff)

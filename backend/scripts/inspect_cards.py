@@ -1,4 +1,4 @@
-from .ygopro_api import YGOProAPIHandler, YGOProCard
+from .seed_database_with_yugioh_card.ygopro_api import YGOProAPIHandler, YGOProCard
 from operator import attrgetter
 
 
