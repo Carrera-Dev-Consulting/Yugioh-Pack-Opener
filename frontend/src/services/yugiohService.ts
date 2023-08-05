@@ -1,4 +1,4 @@
-import axios, { Axios } from "axios"
+import { Axios } from "axios"
 import PackRequest from "../models/yugioh/PackRequest"
 import PackResponse from "../models/yugioh/PackResponse"
 import YugiohSet from "../models/yugioh/YugiohSet"

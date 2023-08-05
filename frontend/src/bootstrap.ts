@@ -1,10 +1,10 @@
-import { YugiohAPIService, YugiohService, MockYugiohService } from "./services/yugiohService"
+import { YugiohService, MockYugiohService } from "./services/yugiohService"
 
 export type DefinedServices = {
     yugioh_service: YugiohService
 }
 
-export default function (): DefinedServices {
+export default function bootstrapServices(): DefinedServices {
     return {
         yugioh_service: new MockYugiohService()
     }
