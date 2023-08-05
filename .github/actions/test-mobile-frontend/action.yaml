@@ -11,9 +11,9 @@ runs:
     - name: Install dependencies
       shell: bash
       run: flutter pub get
-      working-directory: ./frontend/mobile
+      working-directory: ./frontend/mobile/packopener
 
     - name: Test app
       shell: bash
       run: flutter test --coverage
-      working-directory: ./frontend/mobile
+      working-directory: ./frontend/mobile/packopener
