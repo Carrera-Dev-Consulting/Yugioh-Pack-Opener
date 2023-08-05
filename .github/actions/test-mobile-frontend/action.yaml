@@ -7,7 +7,6 @@ runs:
       uses: subosito/flutter-action@v2
       with:
         channel: "stable"
-      working-directory: ./frontend/mobile
 
     - name: Install dependencies
       shell: bash
