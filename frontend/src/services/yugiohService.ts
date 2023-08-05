@@ -41,3 +41,12 @@ export class YugiohAPIService implements YugiohService {
     }
 
 }
+
+export class MockYugiohService implements YugiohService {
+    getSets(): Promise<YugiohSet[]> {
+        return Promise.resolve([]);
+    }
+    openPacks(request: PackRequest): Promise<PackResponse> {
+        return Promise.resolve({});
+    }
+}

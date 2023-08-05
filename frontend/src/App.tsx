@@ -1,23 +1,24 @@
 import logo from './assets/logo.svg';
 import './App.css';
+import { DefinedServices } from './bootstrap';
+import { Home } from './views/home';
 
-function App() {
+type AppProps = {
+  services: DefinedServices
+}
+
+
+function App(props: AppProps) {
+  // TODO: Build out to load all views and add the header with navbar and footer
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Yugioh Card Puller</h1>
       </header>
+      <section>
+        <Home services={props.services} />
+      </section>
     </div>
   );
 }

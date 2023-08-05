@@ -1,9 +1,9 @@
 import React from "react"
 import Layout from "../components/layout"
+import { ViewProps } from "./base"
 
 type HomePageProps = {
-
-}
+} & ViewProps
 
 
 

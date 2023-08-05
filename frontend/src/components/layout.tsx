@@ -6,9 +6,9 @@ type LayoutProps = {
 
 export const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
     return (<div>
-        <h1>
+        <h2>
             {props.title}
-        </h1>
+        </h2>
         <div>
             {props.children}
         </div>
