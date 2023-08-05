@@ -19,5 +19,3 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - uses: ./.github/actions/test-mobile-frontend
-              env:
-                ACTIONS_ALLOW_UNSECURE_COMMANDS: true

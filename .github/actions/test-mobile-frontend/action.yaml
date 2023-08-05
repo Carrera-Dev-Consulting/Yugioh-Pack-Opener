@@ -4,7 +4,9 @@ runs:
   using: composite
   steps:
     - name: Install Flutter
-      uses: subosito/flutter-action@v1.3.2
+      uses: subosito/flutter-action@v2
+      with:
+        channel: "stable"
     - name: Install dependencies
       shell: bash
       run: flutter pub get
