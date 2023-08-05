@@ -1,0 +1,19 @@
+name: Test Mobile Frontend
+description: Validates the code for our mobile app
+runs:
+  using: composite
+  steps:
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: "stable"
+
+    - name: Install dependencies
+      shell: bash
+      run: flutter pub get
+      working-directory: ./frontend/mobile/packopener
+
+    - name: Test app
+      shell: bash
+      run: flutter test --coverage
+      working-directory: ./frontend/mobile/packopener
