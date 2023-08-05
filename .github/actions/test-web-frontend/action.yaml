@@ -1,5 +1,5 @@
 name: Test Frontend
-description: Validates the code in the frontend folder
+description: Validates the code for our web app
 runs:
   using: composite
   steps:
