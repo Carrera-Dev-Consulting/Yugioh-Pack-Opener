@@ -3,7 +3,7 @@ from typing import Iterable, TypeVar
 import sqlalchemy
 import sqlalchemy.orm
 
-from app.repository.models import YugiohCard, YugiohSet, YugiohCardSetAssociation
+from app.repository.models import YugiohCardORM, YugiohSetORM, YugiohCardSetAssociation
 from .ygopro_api import YGOProCard, YGoProSetReference, YGoProSet
 
 T = TypeVar("T")
@@ -15,8 +15,8 @@ def iter_chunk_list(items: list[T], chunk_size: int) -> Iterable[list[T]]:
     )
 
 
-def map_ygopro_to_orm(card: YGOProCard) -> YugiohCard:
-    return YugiohCard(
+def map_ygopro_to_orm(card: YGOProCard) -> YugiohCardORM:
+    return YugiohCardORM(
         external_id=card.id,
         name=card.name,
         type=card.type,
@@ -27,7 +27,7 @@ def map_ygopro_to_orm(card: YGOProCard) -> YugiohCard:
 
 
 def create_card_set_association(
-    card_set: YGoProSetReference, orm_card: YugiohCard, orm_set: YugiohSet
+    card_set: YGoProSetReference, orm_card: YugiohCardORM, orm_set: YugiohSetORM
 ) -> YugiohCardSetAssociation:
     return YugiohCardSetAssociation(
         card_id=orm_card.id,
@@ -50,7 +50,7 @@ class DBLayer:
     def save_cards_in_database(self, cards: list[YGOProCard]):
         with self.scoped_session() as session:
             cards = limit_cards_not_in_db(cards, session)
-            orm_cards: dict[str, YugiohCard] = {}
+            orm_cards: dict[str, YugiohCardORM] = {}
             orm_sets = get_sets_from_database(session)
 
             for cards_chunk in iter_chunk_list(cards, 50):
@@ -82,8 +82,8 @@ def limit_cards_not_in_db(
     card_ids = [card.id for card in cards]
     stored_ids = {
         record.external_id
-        for record in session.query(YugiohCard.external_id)
-        .filter(YugiohCard.external_id.in_(card_ids))
+        for record in session.query(YugiohCardORM.external_id)
+        .filter(YugiohCardORM.external_id.in_(card_ids))
         .all()
     }
     return [card for card in cards if card.id not in stored_ids]
@@ -95,13 +95,13 @@ def limit_card_sets_not_in_db(
     set_ids = [card_set.set_code for card_set in card_sets]
     stored_ids = {
         record.external_id
-        for record in session.query(YugiohSet.set_id)
-        .filter(YugiohSet.set_id.in_(set_ids))
+        for record in session.query(YugiohSetORM.set_id)
+        .filter(YugiohSetORM.set_id.in_(set_ids))
         .all()
     }
     return [card_set for card_set in card_sets if card_set.set_code not in stored_ids]
 
 
-def get_sets_from_database(session: sqlalchemy.orm.Session) -> dict[str, YugiohSet]:
-    sets: list[YugiohSet] = session.query(YugiohSet).all()
+def get_sets_from_database(session: sqlalchemy.orm.Session) -> dict[str, YugiohSetORM]:
+    sets: list[YugiohSetORM] = session.query(YugiohSetORM).all()
     return {yugioh_set.set_id: yugioh_set for yugioh_set in sets}

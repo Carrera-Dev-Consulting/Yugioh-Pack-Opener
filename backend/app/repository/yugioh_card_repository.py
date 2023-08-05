@@ -1,8 +1,14 @@
+from typing import Protocol
 from sqlalchemy.orm import joinedload
 
 from .base import Repository
-from app.repository.models.yugioh_card import YugiohCard as YugiohCardORM
+from app.repository.models.yugioh_card import YugiohCardORM
 from app.models import YugiohCard, YugiohSetInfo
+
+
+class CardRepository(Protocol):
+    def get_cards_for_ids(card_ids: list[str]) -> list[YugiohCard]:
+        pass
 
 
 def orm_to_domain_model(orm_model: YugiohCardORM) -> YugiohCardORM:

@@ -1,6 +1,10 @@
 from sqlalchemy.orm import Session
 
 
+class NotFoundException(Exception):
+    pass
+
+
 class Repository:
     def __init__(self, session: Session) -> None:
         self.session = session

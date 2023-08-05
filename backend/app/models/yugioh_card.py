@@ -6,7 +6,7 @@ class YugiohSetInfo(Base):
     set_id: str
     rarity: str
     rarity_code: str
-    price: str
+    price: str | None
 
 
 class YugiohCard(Base):

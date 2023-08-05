@@ -4,7 +4,7 @@ from sqlalchemy import Column, String
 from .base import BaseSQLModel
 
 
-class YugiohCard(BaseSQLModel):
+class YugiohCardORM(BaseSQLModel):
     __tablename__ = "yugioh_cards"
 
     id = Column(String(36), primary_key=True, default=uuid.uuid4)

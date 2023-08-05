@@ -1,9 +1,15 @@
 import uuid
-from backend.app.models.yugioh_card import YugiohCard
 from .base import Base
+
+
+class YugiohCardInSet(Base):
+    card_id: str
+    rarity: str
+    rarity_code: str
+    price: str | None
 
 
 class YugiohSet(Base):
     id: uuid.UUID
     name: str
-    cards: list[YugiohCard] = []
+    cards: list[YugiohCardInSet] = []
