@@ -4,12 +4,12 @@ abstract class CardModel {
   final String description;
   final String type;
   final String name;
-  final String image;
+  final List<String> images;
   final Game game;
   const CardModel(
       {required this.name,
       required this.description,
       required this.type,
       required this.game,
-      required this.image});
+      required this.images});
 }
