@@ -56,13 +56,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  YugiohCard? card;
+  bool cardIsVisible = false;
+  _clickCard() {
+    setState(() {
+      cardIsVisible = cardIsVisible ? false : true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    card = const YugiohCard();
-    print("STATE BUILT");
-    print(card);
+    YugiohCard? card = YugiohCard(
+      click: _clickCard,
+      visible: cardIsVisible,
+    );
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //

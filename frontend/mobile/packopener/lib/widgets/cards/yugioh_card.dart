@@ -1,34 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:packopener/controllers/yugioh_data_reader.dart';
 import 'package:packopener/models/cards/yugioh_card_model.dart';
 import 'package:packopener/widgets/cards/backs/yugioh_card_back.dart';
+import 'package:packopener/widgets/cards/yugioh_card_front.dart';
 import '../../constants.dart';
-import '../../controllers/json_dummy_reader.dart';
+import '../../models/dto/yugioh_card_dto.dart';
 import '../base/playing_card.dart';
 
 class YugiohCard extends PlayingCard {
   final YugiohCardModel? model;
-
-  const YugiohCard({super.key, this.model});
+  final VoidCallback? click;
+  YugiohCard(
+      {super.key,
+      super.size = 1,
+      super.visible = false,
+      this.model,
+      required this.click});
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>>(
-        future: JsonDummyReader.readJson(),
-        builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+    return FutureBuilder<List<YugiohCardDTO>>(
+        future: YugiohDataReader.readJson(),
+        builder: (context, AsyncSnapshot<List<YugiohCardDTO>> snapshot) {
           if (snapshot.hasData) {
-            var cardModel = YugiohCardModel.fromJson(snapshot.data!);
-            return Container(
-                width: YugiohConstants.CARD_WIDTH * size,
-                height: YugiohConstants.CARD_HEIGHT * size,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: Colors.black),
-                child: visible
-                    ? Image.network(cardModel.image,
-                        scale: size,
-                        width: YugiohConstants.PICTURE_WIDTH,
-                        height: YugiohConstants.PICTURE_HEIGHT)
-                    : YugiohCardBack(size: size));
+            var cardModels = YugiohCardModel.fromDTO(snapshot.data![1]);
+            return InkWell(
+                onTap: click,
+                child: Container(
+                    width: YugiohConstants.CARD_WIDTH * size,
+                    height: YugiohConstants.CARD_HEIGHT * size,
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(4)),
+                    child: !visible
+                        ? YugiohCardFront(
+                            model: cardModels,
+                            size: size,
+                          )
+                        : YugiohCardBack(size: size)));
           } else {
             return YugiohCardBack(size: size);
           }
