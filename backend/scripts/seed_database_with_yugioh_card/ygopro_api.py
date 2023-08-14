@@ -1,4 +1,5 @@
 from datetime import date
+from enum import Enum
 import time
 import json
 import os
@@ -6,7 +7,7 @@ from typing import Callable
 
 
 import requests
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class YGoProSet(BaseModel):
@@ -17,7 +18,7 @@ class YGoProSet(BaseModel):
     set_image: str | None = None
 
 
-class YGoProSetReference(BaseModel):
+class YGOProSetReference(BaseModel):
     set_name: str
     set_code: str
     set_rarity: str
@@ -40,15 +41,51 @@ class YGOProCardPrice(BaseModel):
     coolstuffinc_price: str | None
 
 
+class YGOProLinkMarker(str, Enum):
+    Left = "Left"
+    Right = "Right"
+    Top = "Top"
+    TopLeft = "Top-Left"
+    TopRight = "Top-Right"
+    Bottom = "Bottom"
+    BottomLeft = "Bottom-Left"
+    BottomRight = "Bottom-Right"
+
+
+class YGOProFormat(str, Enum):
+    BanGoat = "ban_goat"
+    BanOCG = "ban_ocg"
+    BanTCG = "ban_tcg"
+
+
+class YGOProBanLevel(str, Enum):
+    Limited = "Limited"
+    SemiLimited = "Semi-Limited"
+    Banned = "Banned"
+
+
 class YGOProCard(BaseModel):
     id: int
     name: str
     type: str
     frameType: str
     desc: str
+    scale: int | None = None
+    defense: int | None = Field(
+        None, alias="def"
+    )  # because def is a reserved word need to alias it
+    attack: int | None = Field(
+        None, alias="atk"
+    )  # wanted it to match def since this is the inverse property on monsters
+    banlist_info: dict[YGOProFormat, YGOProBanLevel] | None = None
+    archtype: str | None = None
+    attribute: str | None = None
+    level: int | None = None
     race: str | None = None
     archetype: str | None = None
-    card_sets: list[YGoProSetReference] = []
+    linkmarkers: list[YGOProLinkMarker] | None = None
+    linkval: int | None = None
+    card_sets: list[YGOProSetReference] = []
     card_images: list[YGOProCardImage] = []
     card_prices: list[YGOProCardPrice] = []
 
@@ -58,7 +95,7 @@ def null_transform(response_body):
 
 
 class YGOProAPIHandler:
-    def __init__(self, cache_directory: str = "cards.json") -> None:
+    def __init__(self, cache_directory: str = "api-responses") -> None:
         self.requests_made = 0
         self.cache_directory = cache_directory
 

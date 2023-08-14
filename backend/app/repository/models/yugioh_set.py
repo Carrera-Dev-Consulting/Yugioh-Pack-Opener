@@ -1,5 +1,7 @@
 import uuid
 from sqlalchemy import Column, String, ForeignKey, Date, Integer
+from sqlalchemy.orm import Relationship
+
 from .base import BaseSQLModel
 from .yugioh_card import YugiohCardORM
 
@@ -25,3 +27,11 @@ class YugiohCardSetAssociation(BaseSQLModel):
     rarity = Column(String(255), nullable=False)
     rarity_code = Column(String(255), nullable=False)
     price = Column(String(255), nullable=True)
+
+    card = Relationship(
+        YugiohCardORM,
+        lazy="select",
+        back_populates="sets",
+    )
+
+    set = Relationship(YugiohSetORM, lazy="select", back_populates="cards")

@@ -38,6 +38,7 @@ class YugiohSetRepository(Repository):
                     rarity=card.rarity,
                     rarity_code=card.rarity_code,
                     price=card.price,
+                    images=card.card.images,
                 )
                 for card in set.cards
             ],

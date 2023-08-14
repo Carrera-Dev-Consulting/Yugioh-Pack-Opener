@@ -4,7 +4,7 @@ import sqlalchemy
 import sqlalchemy.orm
 
 from app.repository.models import YugiohCardORM, YugiohSetORM, YugiohCardSetAssociation
-from .ygopro_api import YGOProCard, YGoProSetReference, YGoProSet
+from .ygopro_api import YGOProCard, YGOProSetReference, YGoProSet
 
 T = TypeVar("T")
 
@@ -27,7 +27,7 @@ def map_ygopro_to_orm(card: YGOProCard) -> YugiohCardORM:
 
 
 def create_card_set_association(
-    card_set: YGoProSetReference, orm_card: YugiohCardORM, orm_set: YugiohSetORM
+    card_set: YGOProSetReference, orm_card: YugiohCardORM, orm_set: YugiohSetORM
 ) -> YugiohCardSetAssociation:
     return YugiohCardSetAssociation(
         card_id=orm_card.id,
