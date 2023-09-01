@@ -2,7 +2,7 @@
 
 At a high level we are going to be creating two seperate applications for this. We will be creating the client side rendering of the data we get on packs and opennings and we will be creating a server-side process for generating the packs/pull results. This will allow us to be able to leverage accounts created by the oauth flow using google sign on without having us do any meaningful work which will be nice because storing passwords is ass and having to create a whole new password just to use our app would be equally terrible.
 
-![System Diagram for Whole Flow](./diagrams/Yugioh%20Card%20Drawer%20Diagram.drawio.png)
+![System Diagram for Whole Flow](diagrams/Yugioh%20Card%20Drawer%20Diagram.drawio.png)
 
 
 Currently we will be serving the frontend app using an Nginx server that will also serve as a proxy for the images stored on currently planned s3 so we don't have to worry about it locally but will maybe change depending on how we develop the app as well as for our backend communication.  
