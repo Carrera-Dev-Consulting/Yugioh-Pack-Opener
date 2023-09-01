@@ -5,10 +5,11 @@ from fastapi.testclient import TestClient
 @pytest.fixture
 def fastapi_test_client():
     from app import app
+
     return TestClient(app)
 
 
 def test_items(fastapi_test_client: TestClient):
-    response = fastapi_test_client.get('/healthz')
+    response = fastapi_test_client.get("/healthz")
     assert response.status_code == 200
-    assert response.json() == {'o': 'k'}
+    assert response.json() == {"o": "k"}

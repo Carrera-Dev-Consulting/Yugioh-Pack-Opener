@@ -1,3 +1,6 @@
 -r requirements.txt
 pytest
 httpx==0.24.1
+requests
+alembic
+black
