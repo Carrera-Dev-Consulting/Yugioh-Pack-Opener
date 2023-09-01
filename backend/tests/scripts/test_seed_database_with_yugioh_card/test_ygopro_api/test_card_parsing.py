@@ -407,3 +407,175 @@ def test_when_given_normal_trap_card__parses_into_model_correctly():
     parsed = YGOProCard.model_validate(card)
 
     assert parsed.attack is None, "Attack was set"
+
+
+def test_when_given_field_spell__parses_into_model_correctly():
+    card = {
+        "id": 295517,
+        "name": "A Legendary Ocean",
+        "type": "Spell Card",
+        "frameType": "spell",
+        "desc": "(This card's name is always treated as \"Umi\".)\r\nAll WATER monsters on the field gain 200 ATK/DEF. Reduce the Level of all WATER monsters in both players' hands and on the field by 1.",
+        "race": "Field",
+        "archetype": "Umi",
+        "card_sets": [
+            {
+                "set_name": "Dark Beginning 2",
+                "set_code": "DB-EN66",
+                "set_rarity": "Common",
+                "set_rarity_code": "(C)",
+                "set_price": "0",
+            },
+            {
+                "set_name": "Dark Beginning 2",
+                "set_code": "DB2-EN187",
+                "set_rarity": "Common",
+                "set_rarity_code": "(C)",
+                "set_price": "1.48",
+            },
+            {
+                "set_name": "Hobby League 1 participation cards B",
+                "set_code": "HL1-EN003",
+                "set_rarity": "Common",
+                "set_rarity_code": "(C)",
+                "set_price": "11.44",
+            },
+            {
+                "set_name": "Legacy of Darkness",
+                "set_code": "LOD-078",
+                "set_rarity": "Common",
+                "set_rarity_code": "(C)",
+                "set_price": "1.48",
+            },
+            {
+                "set_name": "Legacy of Darkness",
+                "set_code": "LOD-EN078",
+                "set_rarity": "Common",
+                "set_rarity_code": "(C)",
+                "set_price": "12.87",
+            },
+            {
+                "set_name": "Legendary Duelists",
+                "set_code": "LEDU-EN021",
+                "set_rarity": "Common",
+                "set_rarity_code": "(C)",
+                "set_price": "1.28",
+            },
+            {
+                "set_name": "Legendary Duelists: Season 1",
+                "set_code": "LDS1-EN029",
+                "set_rarity": "Common",
+                "set_rarity_code": "(C)",
+                "set_price": "1.12",
+            },
+            {
+                "set_name": "Magnificent Mavens",
+                "set_code": "MAMA-EN079",
+                "set_rarity": "Ultra Rare",
+                "set_rarity_code": "(UR)",
+                "set_price": "0",
+            },
+            {
+                "set_name": "Realm of the Sea Emperor Structure Deck",
+                "set_code": "SDRE-EN024",
+                "set_rarity": "Common",
+                "set_rarity_code": "(C)",
+                "set_price": "1.25",
+            },
+            {
+                "set_name": "Retro Pack 2",
+                "set_code": "RP02-EN062",
+                "set_rarity": "Common",
+                "set_rarity_code": "(C)",
+                "set_price": "1.64",
+            },
+            {
+                "set_name": "Speed Duel GX: Midterm Paradox",
+                "set_code": "SGX2-ENC13",
+                "set_rarity": "Common",
+                "set_rarity_code": "(C)",
+                "set_price": "0",
+            },
+            {
+                "set_name": "Structure Deck: Fury from the Deep",
+                "set_code": "SD4-EN020",
+                "set_rarity": "Common",
+                "set_rarity_code": "(C)",
+                "set_price": "1.24",
+            },
+        ],
+        "card_images": [
+            {
+                "id": 295517,
+                "image_url": "https://images.ygoprodeck.com/images/cards/295517.jpg",
+                "image_url_small": "https://images.ygoprodeck.com/images/cards_small/295517.jpg",
+                "image_url_cropped": "https://images.ygoprodeck.com/images/cards_cropped/295517.jpg",
+            }
+        ],
+        "card_prices": [
+            {
+                "cardmarket_price": "0.12",
+                "tcgplayer_price": "0.17",
+                "ebay_price": "0.99",
+                "amazon_price": "1.33",
+                "coolstuffinc_price": "0.49",
+            }
+        ],
+    }
+
+    parsed = YGOProCard.model_validate(card)
+
+    assert parsed.attack is None, "Attack was set"
+
+
+def test_when_given_union_effect_monster__parses_into_model_correctly():
+    card = {
+        "id": 30012506,
+        "name": "A-Assault Core",
+        "type": "Union Effect Monster",
+        "frameType": "effect",
+        "desc": "Once per turn, you can either: Target 1 LIGHT Machine monster you control; equip this card to that target, OR: Unequip this card and Special Summon it. A monster equipped with this card is unaffected by your opponent's monster effects (except its own), also if the equipped monster would be destroyed by battle or card effect, destroy this card instead. If this card is sent from the field to the GY: You can add 1 other Union monster from your GY to your hand.",
+        "atk": 1900,
+        "def": 200,
+        "level": 4,
+        "race": "Machine",
+        "attribute": "LIGHT",
+        "archetype": "ABC",
+        "card_sets": [
+            {
+                "set_name": "Legendary Collection Kaiba Mega Pack",
+                "set_code": "LCKC-EN019",
+                "set_rarity": "Secret Rare",
+                "set_rarity_code": "(ScR)",
+                "set_price": "3.79",
+            },
+            {
+                "set_name": "Structure Deck: Seto Kaiba",
+                "set_code": "SDKS-EN001",
+                "set_rarity": "Super Rare",
+                "set_rarity_code": "(SR)",
+                "set_price": "2.2",
+            },
+        ],
+        "card_images": [
+            {
+                "id": 30012506,
+                "image_url": "https://images.ygoprodeck.com/images/cards/30012506.jpg",
+                "image_url_small": "https://images.ygoprodeck.com/images/cards_small/30012506.jpg",
+                "image_url_cropped": "https://images.ygoprodeck.com/images/cards_cropped/30012506.jpg",
+            }
+        ],
+        "card_prices": [
+            {
+                "cardmarket_price": "0.98",
+                "tcgplayer_price": "0.75",
+                "ebay_price": "1.99",
+                "amazon_price": "3.31",
+                "coolstuffinc_price": "1.99",
+            }
+        ],
+    }
+
+    parsed = YGOProCard.model_validate(card)
+
+    assert parsed.attack == 1900
