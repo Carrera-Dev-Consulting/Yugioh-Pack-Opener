@@ -32,6 +32,10 @@ def main(
     card_json_images_directory: str,
     set_images_directory: str,
 ):
+    cache_directory = f"cached/{cache_directory}"
+    card_json_images_directory = f"cached/{card_json_images_directory}"
+    set_images_directory = f"cached/{set_images_directory}"
+    ensure_directory("cached")
     ensure_directory(cache_directory)
     ensure_directory(card_json_images_directory)
     ensure_directory(set_images_directory)
