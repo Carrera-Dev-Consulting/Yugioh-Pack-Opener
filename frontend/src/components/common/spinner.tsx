@@ -1,9 +1,7 @@
 import './spinner.css';
 
 type SpinnerProps = {
-    // color for the circle as a hex value
     background: string,
-    // size of spinner, this sets both height and width
     size: number,
 }
 
@@ -15,6 +13,6 @@ export const Spinner: React.FC<SpinnerProps> = (props: SpinnerProps) => {
                 height: props.size,
                 width: props.size,
             }}
-        ></div>
+        />
     )
 }
