@@ -1,9 +1,10 @@
+from contextlib import contextmanager
 from datetime import date
 from enum import Enum
 import time
 import json
 import os
-from typing import Callable
+from typing import IO, Any, Callable
 
 
 import requests
@@ -94,19 +95,60 @@ def null_transform(response_body):
     return response_body
 
 
+class DirectoryCacher:
+    def __init__(self, directory) -> None:
+        self.directory = directory
+        self.computed_entries = {}
+
+    def _path_for_entry(self, cache_entry: str):
+        if cache_entry not in self.computed_entries:
+            self.computed_entries[cache_entry] = f"{self.directory}/{cache_entry}"
+        return self.computed_entries[cache_entry]
+
+    @contextmanager
+    def open_write_buffer(self, cache_entry, binary=False) -> IO[Any]:
+        flags = ["w"]
+        if binary:
+            flags.append("b")
+
+        with open(self._path_for_entry(cache_entry), "".join(flags)) as fp:
+            yield fp
+
+    def exists(self, cache_entry: str) -> bool:
+        return os.path.exists(self._path_for_entry(cache_entry))
+
+    def read(self, cache_entry: str, as_json=False) -> str | dict | list:
+        if not self.exists(cache_entry):
+            return None
+
+        with open(self._path_for_entry(cache_entry), "r") as fp:
+            if as_json:
+                json.load(fp)
+            else:
+                return fp.read()
+
+
 class YGOProAPIHandler:
-    def __init__(self, cache_directory: str = "api-responses") -> None:
+    def __init__(
+        self,
+        cache_directory: str = "api-responses",
+        cacher=None,
+        requests=requests,
+        sleep=time.sleep,
+    ) -> None:
         self.requests_made = 0
-        self.cache_directory = cache_directory
+        self.cacher = cacher or DirectoryCacher(cache_directory)
+        self.requests = requests
+        self.sleep = sleep
 
     def _make_request(self, path: str, **kwargs):
         if self.requests_made < 4:
-            response = requests.get(path, **kwargs)
+            response = self.requests.get(path, **kwargs)
             self.requests_made += 1
             return response
         else:
             print("Sleeping for a bit to not overload YGOPro API...")
-            time.sleep(1.1)
+            self.sleep(1.1)  # this is set by the api not us
             self.requests_made = 0
             return self._make_request(path, **kwargs)
 
@@ -119,7 +161,7 @@ class YGOProAPIHandler:
             return
 
         with self._make_request(url, stream=True) as response:
-            with open(localpath, "wb") as fp:
+            with self.cacher.open_write_buffer(localpath, binary=True) as fp:
                 for chunk in response.iter_content(255):
                     fp.write(chunk)
 
@@ -129,14 +171,12 @@ class YGOProAPIHandler:
         api_path: str,
         transform_response: Callable[[dict | list], dict | list] = null_transform,
     ) -> list | dict:
-        full_path = f"{self.cache_directory}/{cache_file_name}"
-        if os.path.exists(full_path):
-            with open(full_path, "r") as fp:
-                return json.load(fp)
+        if self.cacher.exists(cache_file_name):
+            return self.cacher.read(cache_file_name, as_json=True)
 
         response = self._make_request(api_path)
         parsed = transform_response(response.json())
-        with open(full_path, "w") as fp:
+        with self.cacher.open_write_buffer(cache_file_name, binary=False) as fp:
             json.dump(parsed, fp)
         return parsed
 
