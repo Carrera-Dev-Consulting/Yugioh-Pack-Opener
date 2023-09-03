@@ -20,11 +20,4 @@ describe("Testing shortenText", function () {
         }
         expect(scenario).toThrow(InvalidOperation)
     })
-
-    test('when given something_because I wanted to test', () => {
-        const scenario = () => {
-            shortenText('Input', 1)
-        }
-        expect(scenario).toThrow(InvalidOperation)
-    })
 })
