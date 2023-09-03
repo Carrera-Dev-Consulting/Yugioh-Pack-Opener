@@ -13,7 +13,7 @@ class YugiohSetORM(BaseSQLModel):
     name = Column(String(255), nullable=False)
     release_date = Column(Date, nullable=True)
     card_count = Column(Integer, nullable=False)
-    set_image = Column(String(36), nullable=True)
+    set_image = Column(String(255), nullable=True)
 
 
 class YugiohCardSetAssociation(BaseSQLModel):

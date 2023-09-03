@@ -58,4 +58,5 @@ class YugiohCardBanListInfoORM(BaseSQLModel):
     card_id = Column(String(36), ForeignKey(YugiohCardORM.id), primary_key=True)
     format = Column(String(255), primary_key=True)
     level = Column(String(255), nullable=False)
+
     card = Relationship(YugiohCardORM, lazy="select", back_populates="bans")
