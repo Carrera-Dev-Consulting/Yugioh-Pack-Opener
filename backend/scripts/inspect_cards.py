@@ -1,4 +1,6 @@
 from typing import Iterable
+
+import click
 from .seed_database_with_yugioh_card.ygopro_api import YGOProAPIHandler, YGOProCard
 import json
 
@@ -89,8 +91,8 @@ def print_cards_properties_with_banlist_info():
 
 
 def main():
-    print_longest_card()
-    # save_into_json_output_all_kinds_of_cards()
+    # print_longest_card()
+    save_into_json_output_all_kinds_of_cards()
     # print_all_fields_on_each_card()
     # print_all_linkmarkers()
     # print_lowest_link_value()

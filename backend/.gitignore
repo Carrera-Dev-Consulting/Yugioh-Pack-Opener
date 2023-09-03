@@ -4,3 +4,4 @@ __pycache__/
 cards/
 sets/
 api-responses/
+output.json
