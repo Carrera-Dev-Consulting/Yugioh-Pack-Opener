@@ -4,6 +4,13 @@ from .yugioh_card import YugiohCard, YugiohSetInfo
 from .set_options import SetOptions
 from .pack_request import PackRequest
 from .pack import Pack
+from .gacha_configuration import (
+    GachaConfiguration,
+    WeightedRarityPool,
+    WeightedCollection,
+    SingleRarityPool,
+    Pool,
+)
 
 
 __all__ = [
@@ -15,4 +22,9 @@ __all__ = [
     "SetOptions",
     "PackRequest",
     "Pack",
+    "GachaConfiguration",
+    "WeightedRarityPool",
+    "WeightedCollection",
+    "SingleRarityPool",
+    "Pool",
 ]

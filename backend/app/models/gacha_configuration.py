@@ -127,7 +127,7 @@ class Pool(Protocol):
 
 @dataclass
 class GachaConfiguration:
-    pools: list[Pool] = field()
+    pools: list[Pool]
 
     def pull(self) -> GachaPull:
         cards = [card.card_id for pool in self.pools for card in pool.pull()]
