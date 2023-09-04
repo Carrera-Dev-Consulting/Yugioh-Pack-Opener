@@ -1,7 +1,7 @@
 from unittest.mock import Mock
 import pytest
 from app.models import WeightedCollection, WeightedRarityPool, YugiohCardInSet
-from app.models.exceptions.gacha_exceptions import InvalidPool
+from app.models.exceptions.gacha_exceptions import InvalidPool, NotEnoughCards
 
 
 def test_when_weighted_pool_total_does_not_work__raise_value_error():
@@ -163,3 +163,71 @@ def test_when_pool_is_empty__returns_non_empty_pool(random):
     actual_weight = sut.pick_weight(random_float=random)
 
     assert actual_weight is expected_weight
+
+
+def test_when_generating_a_pull_and_not_enough_items_to_meet_required_amount__raises_not_enough_cards():
+    sut = WeightedRarityPool(quantity=2, weights=[weighted_collection(1)])
+    with pytest.raises(NotEnoughCards):
+        sut.pull()
+
+
+def test_when_pulling_from_pool_without_any_individual_weight_more_than_others__pulls_from_every_pool_available():
+    cards = [card("this"), card("magic"), card("moment")]
+    sut = WeightedRarityPool(
+        quantity=3,
+        weights=[
+            weighted_collection(1, cards=cards[0:1]),
+            weighted_collection(1, cards=cards[1:]),
+        ],
+    )
+
+    items = sut.pull()
+
+    def sort_by_id(a: YugiohCardInSet):
+        return a.card_id
+
+    items.sort(key=sort_by_id)
+    cards.sort(key=sort_by_id)
+    assert items == cards
+
+
+@pytest.fixture
+def random_range():
+    return Mock(name="random_range")
+
+
+def test_when_pulling_from_pool__selects_weight_based_on_random_float(
+    random, random_range
+):
+    expected = card("this")
+    sut = WeightedRarityPool(
+        quantity=1,
+        weights=[
+            weighted_collection(1, cards=[expected]),
+            weighted_collection(1, cards=[card("magic"), card("moment")]),
+        ],
+    )
+
+    random.return_value = 0.5
+    random_range.return_value = 0
+
+    [selected_card] = sut.pull(random_float=random, random_range=random_range)
+
+    assert selected_card == expected
+
+
+def test_when_pulling_multiple_times__pulls_are_unique():
+    sut = WeightedRarityPool(
+        quantity=1,
+        weights=[
+            weighted_collection(
+                1, cards=[card("items"), card("this magic moment"), card("items")]
+            ),
+            weighted_collection(1, cards=[card("trunks")]),
+        ],
+    )
+
+    first = sut.pull()
+    second = sut.pull()
+
+    assert first != second
