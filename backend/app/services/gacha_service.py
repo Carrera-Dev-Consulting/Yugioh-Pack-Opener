@@ -13,7 +13,7 @@ class GachaService:
         self.set_discovery = set_discovery
 
     def roll_for_set(self, set: YugiohSet) -> GachaPull:
-        options = self.set_discovery.dicover_set_options(set)
+        options = self.set_discovery.discover_set_options(set)
         config = self.build_configuration_from_set_with_options(set, options)
         return config.pull()
 
