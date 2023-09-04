@@ -6,6 +6,7 @@ import pytest
 from app.services import SetDiscoveryService
 from app.services.exceptions.set_exceptions import NoSetOptions
 from app.models import YugiohSet
+from app.models.set_options import DEFAULT_SET_OPTIONS, SetOptions
 
 
 def yugioh_set() -> YugiohSet:
@@ -37,3 +38,22 @@ def test_when_raising_no_set_options__sets_set_id_correctly():
         sut.discover_set_options(card_set)
 
     assert err.value.set_id == set_id
+
+
+def test_when_getting_unmapped_set__returns_default_options():
+    sut = SetDiscoveryService()
+    card_set = yugioh_set()
+
+    options = sut.discover_set_options(card_set)
+
+    assert options is DEFAULT_SET_OPTIONS
+
+
+def test_when_getting_mapped_set__returns_mapped_options():
+    card_set = yugioh_set()
+    expected_options = SetOptions(options=[])
+    sut = SetDiscoveryService({card_set.code: expected_options})
+
+    actual_options = sut.discover_set_options(card_set)
+
+    assert actual_options is expected_options
