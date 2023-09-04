@@ -6,3 +6,6 @@ sets/
 api-responses/
 cached/
 output.json
+.coverage
+coverage.lcov
+coverage/
