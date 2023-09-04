@@ -221,7 +221,7 @@ def test_when_pulling_multiple_times__pulls_are_unique():
         quantity=1,
         weights=[
             weighted_collection(
-                1, cards=[card("items"), card("this magic moment"), card("items")]
+                1, cards=[card("items"), card("this magic moment"), card("other")]
             ),
             weighted_collection(1, cards=[card("trunks")]),
         ],
