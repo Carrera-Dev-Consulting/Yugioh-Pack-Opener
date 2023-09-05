@@ -17,12 +17,12 @@ abstract class CardBack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: YugiohConstants.CARD_WIDTH,
-      height: YugiohConstants.CARD_HEIGHT,
+      width: BaseCard.CARD_WIDTH,
+      height: BaseCard.CARD_HEIGHT,
       child: Image.network(
         image,
-        width: YugiohConstants.CARD_WIDTH * size,
-        height: YugiohConstants.CARD_HEIGHT * size,
+        width: BaseCard.CARD_WIDTH * size,
+        height: BaseCard.CARD_HEIGHT * size,
       ),
     );
   }
