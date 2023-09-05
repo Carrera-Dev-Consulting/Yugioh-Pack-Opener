@@ -11,8 +11,9 @@ class YugiohSetORM(BaseSQLModel):
     id = Column(String(36), primary_key=True, default=uuid.uuid4, nullable=False)
     set_id = Column(String(255), nullable=False)
     name = Column(String(255), nullable=False)
-    release_date = Column(Date, nullable=False)
+    release_date = Column(Date, nullable=True)
     card_count = Column(Integer, nullable=False)
+    set_image = Column(String(255), nullable=True)
 
 
 class YugiohCardSetAssociation(BaseSQLModel):
@@ -26,7 +27,7 @@ class YugiohCardSetAssociation(BaseSQLModel):
     )
     rarity = Column(String(255), nullable=False)
     rarity_code = Column(String(255), nullable=False)
-    price = Column(String(255), nullable=True)
+    price = Column(String(255), nullable=False)
 
     card = Relationship(
         YugiohCardORM,
