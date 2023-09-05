@@ -8,6 +8,7 @@ abstract class PlayingCard extends StatefulWidget {
   final CardFront front;
   final CardBack back;
   @override
+  // ignore: library_private_types_in_public_api
   _FlippedState createState() => _FlippedState();
   const PlayingCard(
       {super.key, required this.front, required this.back, this.size = 1});
