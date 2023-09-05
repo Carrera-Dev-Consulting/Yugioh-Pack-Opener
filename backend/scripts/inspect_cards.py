@@ -49,7 +49,7 @@ def print_all_fields_on_each_card():
 
 
 def get_cards() -> list[dict]:
-    with open("api-responses/cards.json", "r") as fp:
+    with open("cached/api-responses/cards.json", "r") as fp:
         return json.load(fp)
 
 
@@ -90,9 +90,30 @@ def print_cards_properties_with_banlist_info():
         print(property)
 
 
+def save_all_rarities_defined():
+    cards = get_cards()
+    rarities = set()
+
+    for card in cards:
+        rarities.update(
+            (set_association["set_rarity_code"], set_association["set_rarity"])
+            for set_association in card.get("card_sets", [])
+        )
+
+    print("Total Unique Rarities", len(rarities))
+
+    with open("output.json", "w") as fp:
+        json.dump(list(rarities), fp)
+
+
+def save_cards_in_sets():
+    pass
+
+
 def main():
     # print_longest_card()
-    save_into_json_output_all_kinds_of_cards()
+    # save_into_json_output_all_kinds_of_cards()
+    save_all_rarities_defined()
     # print_all_fields_on_each_card()
     # print_all_linkmarkers()
     # print_lowest_link_value()

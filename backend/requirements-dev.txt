@@ -4,3 +4,4 @@ httpx==0.24.1
 requests
 alembic
 black
+coverage

@@ -10,7 +10,7 @@ class PackService:
     def open_packs(self, requests: list[PackRequest]) -> list[PackRequestResult]:
         return [
             PackRequestResult(
-                packs=[
+                cards_pulled=[
                     self.pack_builder.build_pack(request.pack_id)
                     for _ in range(request.total_desired)
                 ]

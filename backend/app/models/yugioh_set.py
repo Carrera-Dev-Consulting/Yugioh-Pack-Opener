@@ -11,5 +11,6 @@ class YugiohCardInSet(Base):
 
 class YugiohSet(Base):
     id: uuid.UUID
+    code: str
     name: str
     cards: list[YugiohCardInSet] = []
