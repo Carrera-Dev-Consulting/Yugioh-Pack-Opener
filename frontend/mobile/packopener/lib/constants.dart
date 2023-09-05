@@ -10,3 +10,8 @@ class YugiohConstants {
   static const BACK_OF_CARD_IMAGE =
       "https://ms.yugipedia.com//thumb/e/e5/Back-EN.png/257px-Back-EN.png";
 }
+
+class BaseCard {
+  static const CARD_WIDTH = 2.5 * 100;
+  static const CARD_HEIGHT = 3.5 * 100;
+}
