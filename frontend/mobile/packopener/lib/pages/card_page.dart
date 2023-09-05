@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:packopener/models/cards/card_model.dart';
 import 'package:packopener/widgets/cards/yugioh_card.dart';
 
 import '../controllers/yugioh_data_reader.dart';
@@ -18,6 +17,7 @@ class _CardPageState extends State<CardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
+            //This reads a json file that is used for testing for now. Will be replaced with the api
             child: FutureBuilder<List<YugiohCardDTO>>(
                 future: YugiohDataReader.readJson(),
                 builder:

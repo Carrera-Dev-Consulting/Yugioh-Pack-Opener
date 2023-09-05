@@ -4,8 +4,10 @@ import 'pages/home_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  //Removes the notification bar on your device to full scren the device
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack,
       overlays: [SystemUiOverlay.bottom]);
+  //Whenever there is a system ui change make sure to close the system ui to keep the app fullscreened
   SystemChrome.setSystemUIChangeCallback((systemOverlaysAreVisible) {
     return SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack,
         overlays: [SystemUiOverlay.bottom]);

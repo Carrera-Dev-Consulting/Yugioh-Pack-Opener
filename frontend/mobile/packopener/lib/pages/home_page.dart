@@ -15,6 +15,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Center(
+            //Added a shop button to better understand how flutter navigation works
             child: TextButton(
           child: const Text('Shop'),
           onPressed: () {
