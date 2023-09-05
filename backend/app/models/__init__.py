@@ -1,7 +1,7 @@
 from .base import Base
 from .yugioh_set import YugiohSet, YugiohCardInSet
 from .yugioh_card import YugiohCard, YugiohSetInfo
-from .set_options import SetOptions
+from .set_options import SetOptions, Option, WeightedRarity
 from .pack_request import PackRequest
 from .pack import Pack
 from .gacha_configuration import (
@@ -20,6 +20,7 @@ __all__ = [
     "YugiohCardInSet",
     "YugiohSetInfo",
     "SetOptions",
+    "Option",
     "PackRequest",
     "Pack",
     "GachaConfiguration",

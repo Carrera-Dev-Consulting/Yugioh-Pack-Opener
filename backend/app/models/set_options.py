@@ -1,7 +1,7 @@
 from .base import Base
 
 
-class Weight(Base):
+class WeightedRarity(Base):
     rarity: str
     weight: float
 
@@ -9,7 +9,7 @@ class Weight(Base):
 class Option(Base):
     rarity: str | None = None
     amount_for: int | None = None
-    weighted_rarities: list[Weight] | None = None
+    weighted_rarities: list[WeightedRarity] | None = None
 
 
 class SetOptions(Base):
@@ -21,10 +21,11 @@ DEFAULT_SET_OPTIONS = SetOptions(
         Option(rarity="Common", amount_for=7),
         Option(rarity="Rare", amount_for=1),
         Option(
+            amount_for=1,
             weighted_rarities=[
-                Weight(rarity="Common", weight=0.9),
-                Weight(rarity="Foil", weight=0.1),
-            ]
+                WeightedRarity(rarity="Common", weight=0.9),
+                WeightedRarity(rarity="Foil", weight=0.1),
+            ],
         ),
     ]
 )

@@ -21,6 +21,9 @@ class SingleRarityPool(Base):
     quantity: int
     cards: list[YugiohCardInSet]
 
+    def __len__(self):
+        return len(self.cards)
+
     def _pick_card(self, random_range=random.randrange):
         index = random_range(0, len(self.cards))
         pick = self.cards[index]
@@ -89,6 +92,9 @@ class WeightedRarityPool(Base):
     quantity: int
     weights: list[WeightedCollection]
 
+    def __len__(self):
+        return sum((len(weight) for weight in self.weights), 0)
+
     @field_validator("weights")
     @classmethod
     def transfrom_weights(cls, field: list):
@@ -134,7 +140,7 @@ class WeightedRarityPool(Base):
         Returns:
             list[YugiohCardInSet]: Selected cards for the most recent pull from the pool
         """
-        if sum((len(weight) for weight in self.weights), 0) < self.quantity:
+        if len(self) < self.quantity:
             raise NotEnoughCards()
 
         return [
@@ -146,7 +152,10 @@ class WeightedRarityPool(Base):
 class Pool(Protocol):
     """Definition of Card Pool which allows people to pull cards based on pool configuration"""
 
-    def pull() -> list[YugiohCardInSet]:
+    def __len__(self):
+        pass
+
+    def pull(self) -> list[YugiohCardInSet]:
         pass
 
 

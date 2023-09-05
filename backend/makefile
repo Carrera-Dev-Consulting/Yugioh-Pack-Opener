@@ -11,6 +11,7 @@ test-coverage:
 	mkdir coverage || echo 'coverage exists'
 	coverage run --data-file=coverage/.coverage -m pytest tests
 	coverage lcov --data-file=coverage/.coverage -o coverage/lcov.info
+	make render-coverage-html
 
 render-coverage-html:
 	coverage html --data-file=coverage/.coverage -d coverage/html
