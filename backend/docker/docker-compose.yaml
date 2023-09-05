@@ -46,3 +46,12 @@ services:
       - main
     volumes:
       - kuma:/app/data
+
+  image-server:
+    build:
+      context: ../
+      dockerfile: docker/image-server.Dockerfile
+    networks:
+      - main
+    ports:
+      - 8006:80
