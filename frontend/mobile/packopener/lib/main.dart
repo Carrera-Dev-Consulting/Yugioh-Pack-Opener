@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import "package:flutter/services.dart";
-import 'package:packopener/pages/home_page.dart';
+import 'pages/home_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  //Removes the notification bar on your device to full scren the device
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack,
+      overlays: [SystemUiOverlay.bottom]);
+  //Whenever there is a system ui change make sure to close the system ui to keep the app fullscreened
+  SystemChrome.setSystemUIChangeCallback((systemOverlaysAreVisible) {
+    return SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack,
+        overlays: [SystemUiOverlay.bottom]);
+  });
   SystemChrome.setPreferredOrientations(
           [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
-      .then((value) {
-    //Removes the notification bar on your device to full scren the device
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.transparent));
-    //Whenever there is a system ui change make sure to close the system ui to keep the app fullscreened
-    SystemChrome.setSystemUIChangeCallback((systemOverlaysAreVisible) {
-      return SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    });
-    runApp(const MyApp());
-  });
+      .then((value) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -45,12 +42,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const SafeArea(
-          left: false,
-          bottom: false,
-          right: false,
-          top: false,
-          child: MyHomePage()),
+      home: const MyHomePage(),
     );
   }
 }
