@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:packopener/widgets/base/playing_card.dart';
 import 'package:packopener/widgets/cards/yugioh_card.dart';
 
 import '../controllers/yugioh_data_reader.dart';
@@ -6,7 +7,8 @@ import '../models/cards/yugioh_card_model.dart';
 import '../models/dto/yugioh_card_dto.dart';
 
 class CardPage extends StatefulWidget {
-  const CardPage({super.key});
+  final List<PlayingCard> cards;
+  const CardPage({super.key, required this.cards});
 
   @override
   State<CardPage> createState() => _CardPageState();

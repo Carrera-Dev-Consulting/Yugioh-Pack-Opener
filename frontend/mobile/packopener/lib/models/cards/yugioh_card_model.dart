@@ -31,4 +31,8 @@ class YugiohCardModel extends CardModel {
         type: dto.type,
         images: dto.images);
   }
+
+   static Iterable<YugiohCardModel> translateModels(List<YugiohCardDTO> dtos){
+    return dtos.map((e) => YugiohCardModel.fromDTO(e));
+  }
 }

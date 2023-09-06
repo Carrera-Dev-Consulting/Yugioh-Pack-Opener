@@ -1,4 +1,4 @@
-import 'package:packopener/constants.dart';
+import 'package:packopener/widgets/cards/constants.dart';
 import 'package:packopener/widgets/base/card_back.dart';
 
 class YugiohCardBack extends CardBack {

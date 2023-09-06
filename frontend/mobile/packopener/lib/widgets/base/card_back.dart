@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import '../../constants.dart';
+import '../cards/constants.dart';
 
 abstract class CardBack extends StatelessWidget {
   final double size;
