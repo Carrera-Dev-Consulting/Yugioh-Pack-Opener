@@ -11,7 +11,9 @@ from .gacha_configuration import (
     SingleRarityPool,
     Pool,
 )
-
+from .user import User
+from .result import Result
+from .login import LoginRequest, PublicKeyRequest, LoginInfo, UserRequest
 
 __all__ = [
     "Base",
@@ -21,6 +23,7 @@ __all__ = [
     "YugiohSetInfo",
     "SetOptions",
     "Option",
+    "WeightedRarity",
     "PackRequest",
     "Pack",
     "GachaConfiguration",
@@ -28,4 +31,10 @@ __all__ = [
     "WeightedCollection",
     "SingleRarityPool",
     "Pool",
+    "User",
+    "Result",
+    "LoginRequest",
+    "PublicKeyRequest",
+    "LoginInfo",
+    "UserRequest",
 ]
