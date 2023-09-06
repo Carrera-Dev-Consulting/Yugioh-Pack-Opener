@@ -10,9 +10,8 @@ type YugiohPageProps = {
 
 
 export const Yugioh: React.FC<YugiohPageProps> = (props: YugiohPageProps) => {
-    return <Layout title="Yugioh">
+    return <Layout title="">
         <div>
-            <p>Yugioh Home Page</p>
             <YugiohSetPicker />
         </div>
     </Layout>
