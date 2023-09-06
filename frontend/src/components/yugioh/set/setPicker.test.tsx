@@ -3,20 +3,28 @@ import { YugiohSetPicker } from './setPicker';
 import YugiohSet from '../../../models/yugioh/YugiohSet';
 
 
-jest.mock('./SetDisplay', () => ({YugiohSetDisplay: () => <div data-testid="yugioh-set-display"/>}));
+const mockedValue = {
+    sets: [] as YugiohSet[], error: false
+}
 
+jest.mock('./SetDisplay', () => ({ YugiohSetDisplay: () => <div data-testid="yugioh-set-display" /> }));
+
+jest.mock('./hooks/setHook', () => ({
+    useSets: () => {
+        return mockedValue
+    }
+}));
 
 test('render yugioh set picker on screen', () => {
-    jest.mock('./hooks/setHook', () => ({
-        useSets: () => ({ sets: [
-            {
-                id: 'singleSet',
-                name: 'Single Set',
-                cards: [],
-                setImage: 'https://cdn-icons-png.flaticon.com/512/6051/6051493.png',
-            } as YugiohSet
-        ], error: false})
-    }));
+    mockedValue.sets = [
+        {
+            id: 'singleSet',
+            name: 'Single Set',
+            cards: [],
+            setImage: 'https://cdn-icons-png.flaticon.com/512/6051/6051493.png',
+        }
+    ]
+    mockedValue.error = false
     render(
         <YugiohSetPicker />
     );
@@ -25,16 +33,16 @@ test('render yugioh set picker on screen', () => {
 });
 
 test('render yugioh set picker with single set', async () => {
-    jest.mock('./hooks/setHook', () => ({
-        useSets: () => ({ sets: [
-            {
-                id: 'singleSet',
-                name: 'Single Set',
-                cards: [],
-                setImage: 'https://cdn-icons-png.flaticon.com/512/6051/6051493.png',
-            } as YugiohSet
-        ], error: false})
-    }));
+    mockedValue.sets = [
+        {
+            id: 'singleSet',
+            name: 'Single Set',
+            cards: [],
+            setImage: 'https://cdn-icons-png.flaticon.com/512/6051/6051493.png',
+        }
+    ]
+    mockedValue.error = false
+
     render(
         <YugiohSetPicker />
     );
