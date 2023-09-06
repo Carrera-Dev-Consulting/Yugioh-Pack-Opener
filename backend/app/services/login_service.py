@@ -34,6 +34,7 @@ from app.models import (
     PublicKeyRequest,
     RegistrationRequest,
 )
+from app.models.login import b64_decode
 from app.repository.user_repository import authentication_keys, UserRepository
 from .exceptions.login import InvalidLogin
 from .credential_service import CredentialService
@@ -109,7 +110,7 @@ class LoginService:
                 expected_challenge=request.challenge,
                 expected_rp_id=RP_ID,
                 expected_origin=STATIC_HOST,
-                credential_public_key=user.meta["public_key"],
+                credential_public_key=b64_decode(user.meta["public_key"]),
                 credential_current_sign_count=user.meta["sign_count"],
             )
             user.meta["sign_count"] = auth.new_sign_count
