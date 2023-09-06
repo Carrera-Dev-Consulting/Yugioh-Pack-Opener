@@ -1,7 +1,11 @@
 import base64
 
 from pydantic import field_validator
-from webauthn.helpers.structs import AuthenticationCredential
+from webauthn.helpers.structs import (
+    AuthenticationCredential,
+    AttestationConveyancePreference,
+    AuthenticatorAttachment,
+)
 
 from .base import Base
 from .user import User
@@ -25,13 +29,8 @@ class WebAuthenticationCredential(AuthenticationCredential):
 
 class PublicKeyRequest(Base):
     user_id: str
-    attestation_type: str
-    authenticator_type: str
-
-
-class UserRequest(Base):
-    user_id: str
-    creds: WebAuthenticationCredential
+    attestation_type: AttestationConveyancePreference
+    authenticator_type: AuthenticatorAttachment | None
 
 
 class LoginRequest(Base):
@@ -43,6 +42,10 @@ class LoginRequest(Base):
     @classmethod
     def convert_to_bytes(cls, v: str):
         return b64_decode(v)
+
+
+class RegistrationRequest(LoginRequest):
+    email: str | None = None
 
 
 class LoginInfo(Base):

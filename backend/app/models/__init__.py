@@ -13,7 +13,7 @@ from .gacha_configuration import (
 )
 from .user import User
 from .result import Result
-from .login import LoginRequest, PublicKeyRequest, LoginInfo, UserRequest
+from .login import LoginRequest, PublicKeyRequest, LoginInfo, RegistrationRequest
 
 __all__ = [
     "Base",
@@ -36,5 +36,5 @@ __all__ = [
     "LoginRequest",
     "PublicKeyRequest",
     "LoginInfo",
-    "UserRequest",
+    "RegistrationRequest",
 ]
