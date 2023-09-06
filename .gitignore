@@ -132,3 +132,4 @@ dist
 backend/cards
 backend/sets
 backend/api-responses
+frontend/mobile/packopener/pubspec.lock
