@@ -7,8 +7,8 @@ const mockedValue = {
     sets: [] as YugiohSet[] | undefined, error: false
 }
 
-jest.mock('./SetDisplay', () => ({ YugiohSetDisplay: () => <div data-testid="yugioh-set-display" /> }));
-jest.mock('../../common/BaseSpinner', () => ({BaseSpinner: () => <div data-testid="base-spinner" />}));
+jest.mock('./setDisplay', () => ({ YugiohSetDisplay: () => <div data-testid="yugioh-set-display" /> }));
+jest.mock('../../common/BaseSpinner', () => ({ BaseSpinner: () => <div data-testid="base-spinner" /> }));
 
 jest.mock('./hooks/setHook', () => ({
     useSets: () => {
