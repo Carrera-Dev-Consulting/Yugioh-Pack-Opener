@@ -1,0 +1,10 @@
+.set-display-holder {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%/1, max(400px, 100%/5)), 1fr));
+    text-align: center;
+    margin: 2% 5%;
+}
+
+.set-display-holder > * {
+    margin: 1%;
+}
