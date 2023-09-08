@@ -36,14 +36,3 @@ spec:
       containers:
         - name: nginx-instance-frontend
           image: #@ "gxldcptrick/yugioh-card-frontend:{}".format(image)
----
-kind: Service
-apiVersion: v1
-metadata:
-  namespace: #@ namespace
-  name: #@ "yugioh-card-puller-frontend"
-spec:
-  type: LoadBalancer
-  selector: #@ labels()
-  ports:
-    - port: #@ port

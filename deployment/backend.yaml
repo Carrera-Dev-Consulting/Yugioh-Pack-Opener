@@ -31,14 +31,3 @@ spec:
       containers:
         - name: fastapi-instance
           image: #@ "gxldcptrick/yugioh-card-backend:{}".format(image)
----
-kind: Service
-apiVersion: v1
-metadata:
-  namespace: #@ namespace
-  name: #@ "yugioh-card-puller-backend"
-spec:
-  type: LoadBalancer
-  selector: #@ labels()
-  ports:
-    - port: #@ port
