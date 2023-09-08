@@ -1,11 +1,11 @@
 #@ load("@ytt:data", "data")
 
 #@ namespace = "yugioh-card-puller-{}".format(data.values.env)
-#@ app = "yugioh-card-puller-backend-{}".format(data.values.env)
+#@ app = "yugioh-card-puller-images-{}".format(data.values.env)
 
 #@ env = data.values.env
 #@ image = data.values.image
-#@ port = 8080
+#@ port = 80
 
 #@ def labels():
   app: #@ app
@@ -34,14 +34,14 @@ spec:
       labels: #@ labels()
     spec:
       containers:
-        - name: fastapi-instance
+        - name: nginx-instance-images
           image: #@ image
 ---
 kind: Service
 apiVersion: v1
 metadata:
   namespace: #@ namespace
-  name: #@ "yugioh-card-puller-backend"
+  name: #@ "yugioh-card-puller-images"
 spec:
   type: LoadBalancer
   selector: #@ labels()
