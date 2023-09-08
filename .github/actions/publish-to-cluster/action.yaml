@@ -41,7 +41,8 @@ runs:
         mkdir "${{ inputs.env }}" || echo "Directory exists"
 
         ytt -f "$GITHUB_WORKSPACE/deployment/envs/${{ inputs.env }}" -f "$GITHUB_WORKSPACE/deployment/lib/schema.yaml" -f "$GITHUB_WORKSPACE/deployment/${{ inputs.service }}.yaml" -v image="${{inputs.image-name}}:${{inputs.version}}" > ${{ inputs.service }}.yaml
-
+        git config --global user.email "workflow@gxldcptrick.dev"
+        git config --global user.name "Senior Workflow"
         git add .
         git commit -m "Deploying ${{inputs.service}} with version: ${{inputs.version}} to ${{inputs.env}}"
         git push
