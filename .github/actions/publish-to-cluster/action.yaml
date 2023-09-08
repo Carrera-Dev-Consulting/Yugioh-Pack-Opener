@@ -30,7 +30,7 @@ runs:
     - name: Add SSH Key to SSH Agent
       uses: webfactory/ssh-agent@v0.7.0
       with:
-        ssh-private-key: $ {{ inputs.ssh-key }}
+        ssh-private-key: ${{ inputs.ssh-key }}
 
     - name: Build Yaml and Commit
       shell: bash
