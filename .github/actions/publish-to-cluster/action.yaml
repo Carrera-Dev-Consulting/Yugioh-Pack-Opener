@@ -16,6 +16,12 @@ inputs:
   ssh-key:
     description: SSH Key to access the cluster repo
     required: true
+  cluster-repo:
+    description: Repo that holds the cluster config
+    required: true
+  cluster-path:
+    description: Path to the cluster specific folder in the repo
+    default: ''
 runs:
   using: composite
   steps:
@@ -23,7 +29,7 @@ runs:
     - name: Checkout Cluster Repo
       uses: actions/checkout@v3
       with:
-        repository: 'gxldcptrick/self-hosted-infra'
+        repository: ${{ inputs.cluster-repo }}
         ref: 'main'
         ssh-key: ${{ inputs.ssh-key }}
         path: cluster-repo
@@ -36,7 +42,8 @@ runs:
     - name: Build Yaml and Commit
       shell: bash
       run: |
-        cd cluster-repo/cluster/my-cluster/yugioh-card-puller/
+        mkdir -p "cluster-repo/${{ inputs.cluster-path }}/yugioh-card-puller/" || echo "App Folder already exists"
+        cd "cluster-repo/${{ inputs.cluster-path }}/yugioh-card-puller/"
 
         mkdir "${{ inputs.env }}" || echo "Directory exists"
 
