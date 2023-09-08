@@ -35,7 +35,7 @@ spec:
     spec:
       containers:
         - name: nginx-instance-frontend
-          image: #@ image
+          image: #@ "gxldcptrick/yugioh-card-frontend:{}".format(image)
 ---
 kind: Service
 apiVersion: v1
