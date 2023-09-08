@@ -23,4 +23,4 @@ jobs:
                 context: './${{ inputs.service }}/'
                 version: ${{ inputs.version }}
                 image-name: gxldcptrick/yugioh-card-${{ inputs.service }}
-                docker-file: '$${{ inputs.service }}/docker/Dockerimage'
+                docker-file: '${{ inputs.service }}/docker/Dockerimage'
