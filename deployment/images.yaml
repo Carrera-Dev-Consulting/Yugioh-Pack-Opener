@@ -1,7 +1,7 @@
 #@ load("@ytt:data", "data")
 
 #@ namespace = "yugioh-card-puller-{}".format(data.values.env)
-#@ app = "yugioh-card-puller-frontend-{}".format(data.values.env)
+#@ app = "yugioh-card-puller-images-{}".format(data.values.env)
 
 #@ env = data.values.env
 #@ image = data.values.image
@@ -34,5 +34,5 @@ spec:
       labels: #@ labels()
     spec:
       containers:
-        - name: nginx-instance-frontend
-          image: #@ "gxldcptrick/yugioh-card-frontend:{}".format(image)
+        - name: nginx-instance-images
+          image: #@ "gxldcptrick/yugioh-card-images:{}".format(image)

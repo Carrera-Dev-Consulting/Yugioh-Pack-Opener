@@ -1,0 +1,5 @@
+#@data/values-schema
+---
+env: env
+port: 8080
+app: app

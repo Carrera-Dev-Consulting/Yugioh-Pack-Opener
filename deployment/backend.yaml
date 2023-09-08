@@ -1,0 +1,33 @@
+#@ load("@ytt:data", "data")
+
+#@ namespace = "yugioh-card-puller-{}".format(data.values.env)
+#@ app = "yugioh-card-puller-backend-{}".format(data.values.env)
+
+#@ env = data.values.env
+#@ image = data.values.image
+#@ port = 8080
+
+#@ def labels():
+  app: #@ app
+#@ end
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: #@ namespace
+  name: #@ "{}-deployment".format(app)
+  labels: #@ labels()
+spec:
+  metadata:
+    namespace: #@ namespace
+  replicas: 1
+  selector:
+    matchLabels: #@ labels()
+  template:
+    metadata:
+      namespace: #@ namespace
+      labels: #@ labels()
+    spec:
+      containers:
+        - name: fastapi-instance
+          image: #@ "gxldcptrick/yugioh-card-backend:{}".format(image)

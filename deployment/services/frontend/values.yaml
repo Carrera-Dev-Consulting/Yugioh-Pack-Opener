@@ -1,0 +1,4 @@
+#@data/values
+---
+app: frontend
+port: 80
