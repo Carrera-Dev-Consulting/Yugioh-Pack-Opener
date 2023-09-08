@@ -1,0 +1,50 @@
+name: Publish to Cluster
+description: Validates the Backend codebase
+inputs:
+  service:
+    description: Name of service
+    required: true
+  image-name:
+    description: Name of image to build
+    required: true
+  version:
+    description: tag for versions of image we wish to push
+    required: true
+  env:
+    description: Environment to Deploy to
+    required: true
+  ssh-key:
+    description: SSH Key to access the cluster repo
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Checkout Cluster Repo
+      uses: actions/checkout@v3
+      with:
+        repository: 'gxldcptrick/self-hosted-infra'
+        ref: 'main'
+        ssh-key: ${{ inputs.ssh-key }}
+        path: cluster-repo
+
+
+    - name: Build Yaml and Commit
+      shell: bash
+      run: |
+        mdkir ~/.ssh/
+        ssh-keyscan github.com >> ~/.ssh/known_hosts
+        
+        ssh-agent -a /tmp/ssh_agent.sock > /dev/null
+        ssh-add - <<< "${{ inputs.ssh-key }}"
+
+        cd cluster-repo/cluster/my-cluster/yugioh-card-puller/
+
+        mkdir "${{ inputs.env }}" || echo "Directory exists"
+
+        ytt -f "$GITHUB_WORKSPACE/deployment/envs/${{ inputs.env }}" -f "$GITHUB_WORKSPACE/deployment/lib/schema.yaml" -f "$GITHUB_WORKSPACE/deployment/${{ inputs.service }}.yaml" -v image="${{inputs.image-name}}:${{inputs.version}}" > ${{ inputs.service }}.yaml
+
+        git checkout -b deployment={}
+        git add .
+        git commit -m "Deploying ${{inputs.service}} with version: ${{inputs.version}} to ${{inputs.env}}"
+        git push
+
