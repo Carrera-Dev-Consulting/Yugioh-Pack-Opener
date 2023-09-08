@@ -16,8 +16,8 @@ on:
                 description: Env to deploy too
                 type: choice
                 options:
-                    - prod
                     - dev
+                    - prod
 jobs:
     build-push-image:
         runs-on: ubuntu-latest
