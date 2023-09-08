@@ -96,12 +96,12 @@ This is actively being worked on so please feel free to open any issues or sugge
 
 ### Built With
 
-* [![React][React.js]][React-url]
-* [![Flutter][Flutter.dev]][Flutter-url]
-* [![FastAPI][FastAPI.dev]][Fast-url]
-* [![MySQL][MySQL.com]][MySQL-url]
-* [![NGinx][nginx.com]][nginx-url]
-* [![Docker][docker.com]][docker-url]
+[![React][React.js]][React-url]
+[![Flutter][Flutter.dev]][Flutter-url]
+[![FastAPI][FastAPI.dev]][Fast-url]
+[![MySQL][MySQL.com]][MySQL-url]
+[![NGinx][nginx.com]][nginx-url]
+[![Docker][docker.com]][docker-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
