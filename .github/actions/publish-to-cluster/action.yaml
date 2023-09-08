@@ -27,16 +27,14 @@ runs:
         ssh-key: ${{ inputs.ssh-key }}
         path: cluster-repo
 
+    - name: Add SSH Key to SSH Agent
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+        ssh-private-key: $ {{ inputs.ssh-key }}
 
     - name: Build Yaml and Commit
       shell: bash
       run: |
-        mkdir ~/.ssh/
-        ssh-keyscan github.com >> ~/.ssh/known_hosts
-        
-        ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-        ssh-add - <<< "${{ inputs.ssh-key }}"
-
         cd cluster-repo/cluster/my-cluster/yugioh-card-puller/
 
         mkdir "${{ inputs.env }}" || echo "Directory exists"
