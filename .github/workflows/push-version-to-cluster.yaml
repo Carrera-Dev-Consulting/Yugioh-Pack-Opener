@@ -1,0 +1,32 @@
+on:
+    workflow_dispatch:
+        inputs:
+            service:
+                description: The service we are buildling
+                options:
+                    - backend
+                    - frontend
+                    - images
+                type: choice
+                required: true
+            version:
+                description: Version we are marking this release as
+                required: true
+            env:
+                description: Env to deploy too
+                type: choice
+                options:
+                    - prod
+                    - dev
+jobs:
+    build-push-image:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: './.github/actions/publish-to-cluster'
+              with:
+                service: ${{ inputs.service }}
+                env: ${{ inputs.env }}
+                version: ${{ inputs.version }}
+                ssh-key: ${{ secrets.CLUSTER_SSH_KEY }}
+                image-name: gxldcptrick/yugioh-card-${{ inputs.service }}

@@ -43,7 +43,6 @@ runs:
 
         ytt -f "$GITHUB_WORKSPACE/deployment/envs/${{ inputs.env }}" -f "$GITHUB_WORKSPACE/deployment/lib/schema.yaml" -f "$GITHUB_WORKSPACE/deployment/${{ inputs.service }}.yaml" -v image="${{inputs.image-name}}:${{inputs.version}}" > ${{ inputs.service }}.yaml
 
-        git checkout -b deployment={}
         git add .
         git commit -m "Deploying ${{inputs.service}} with version: ${{inputs.version}} to ${{inputs.env}}"
         git push
