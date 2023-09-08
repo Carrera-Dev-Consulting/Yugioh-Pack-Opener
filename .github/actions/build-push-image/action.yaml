@@ -33,7 +33,7 @@ runs:
         password: ${{ inputs.docker-password }}
     
     - name: Build/Push Docker Image
-      uses: docker/build-push-action
+      uses: docker/build-push-action@v4
       with:
         context: ${{ inputs.context }}
         tags: ${{ inputs.image-name }}:${{ inputs.version }}
