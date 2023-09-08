@@ -16,6 +16,9 @@ inputs:
   docker-password:
     description: Docker Password to auth with dockerhub
     required: true
+  docker-file: 
+    description: Dockerfile that we build
+    required: true
 runs:
   using: composite
   steps:
@@ -35,3 +38,4 @@ runs:
         context: ${{ inputs.context }}
         tags: ${{ inputs.image-name }}:${{ inputs.version }}
         push: true
+        file: ${{ inputs.docker-file }}

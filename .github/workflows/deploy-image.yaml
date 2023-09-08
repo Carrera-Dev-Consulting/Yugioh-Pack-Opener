@@ -1,0 +1,25 @@
+on:
+    workflow_dispatch:
+        inputs:
+            service:
+                description: The service we are buildling
+                options:
+                    - backend
+                    - frontend
+                type: choice
+                required: true
+            version:
+                description: Version we are marking this release as
+                required: true
+jobs:
+    build-push-image:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: './.github/actions/build-push-image'
+              with:
+                docker-username: ${{ secrets.DOCKER_USERNAME }}
+                docker-password: ${{ secrets.DOCKER_PASSWORD }}
+                context: './${{ inputs.service }}/'
+                version: ${{ inputs.version }}
+                image-name: gxldcptrick/yugioh-card-${{ inputs.service }}
+                docker-file: '$${{ inputs.service }}/docker/Dockerimage'
