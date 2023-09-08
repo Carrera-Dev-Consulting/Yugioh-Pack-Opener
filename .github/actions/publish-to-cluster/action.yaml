@@ -34,7 +34,7 @@ runs:
         mkdir ~/.ssh/
         ssh-keyscan github.com >> ~/.ssh/known_hosts
         
-        ssh-agent -a /tmp/ssh_agent.sock > /dev/null
+        ssh-agent -a $SSH_AUTH_SOCK > /dev/null
         ssh-add - <<< "${{ inputs.ssh-key }}"
 
         cd cluster-repo/cluster/my-cluster/yugioh-card-puller/
