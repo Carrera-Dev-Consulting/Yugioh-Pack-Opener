@@ -1,19 +1,23 @@
 .yugioh-set-picker {
     display: block;
     justify-content: center;
-    text-align: center;
-    border: 3px solid green;
+    border: 3px solid black;
     max-width: 300px;
     max-height: 300px;
-    min-height: 100px;
-    min-width: 100px;
+    min-height: 200px;
+    min-width: 200px;
     position: relative;
 }
 
-.yugio-set-picker-child {
+.yugioh-set-picker-img {
     height: 200px;
     width: 200px;
 }
+
+/* .yugio-set-picker-child {
+    height: 200px;
+    width: 200px;
+} */
 
 .set-img-desc {
     display: block;
@@ -26,6 +30,29 @@
     transform: translate(-50%, -50%);
     height: 100%;
     width: 100%;
+}
+
+.set-selected-count, .set-decrement-count {
+    height: 10%;
+    width: 10%;
+    border-radius: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    opacity: 0.9;
+}
+
+.set-selected-count {
+    background-color: green;
+    top: 0%;
+    left: 100%;
+}
+
+
+.set-decrement-count {
+    background-color: red;
+    position: absolute;
+    top: 85%;
+    left: 100%;
 }
 
 .set-img-desc > p {
