@@ -227,7 +227,7 @@ Project Link: [https://github.com/gxldcptrick/Yugioh-Pack-Opener](https://github
 [stars-shield]: https://img.shields.io/github/stars/gxldcptrick/Yugioh-Pack-Opener.svg?style=for-the-badge
 [stars-url]: https://github.com/gxldcptrick/Yugioh-Pack-Opener/stargazers
 [issues-shield]: https://img.shields.io/github/issues/gxldcptrick/Yugioh-Pack-Opener.svg?style=for-the-badge
-[issues-url]: https://github.com/gxldcptrick/Yugioh-Pack-Opener/issues
+[issues-url]: https://github.com/gxldcptrick/Yugioh-Pack-Opener/issues?logoColor=c001af
 [license-shield]: https://img.shields.io/github/license/gxldcptrick/Yugioh-Pack-Opener.svg?style=for-the-badge
 [license-url]: https://github.com/gxldcptrick/Yugioh-Pack-Opener/blob/master/LICENSE.txt
 [product-screenshot]: images/screenshot.png
