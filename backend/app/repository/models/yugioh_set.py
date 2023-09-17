@@ -15,6 +15,7 @@ class YugiohSetORM(BaseSQLModel):
     card_count = Column(Integer, nullable=False)
     set_image = Column(String(255), nullable=True)
 
+    cards: list['YugiohCardSetAssociation'] = Relationship('yugioh_card_set_associations', lazy='select', uselist=True)
 
 class YugiohCardSetAssociation(BaseSQLModel):
     __tablename__ = "yugioh_card_set_associations"
@@ -33,6 +34,7 @@ class YugiohCardSetAssociation(BaseSQLModel):
         YugiohCardORM,
         lazy="select",
         back_populates="sets",
+        uselist=False,
     )
 
-    set = Relationship(YugiohSetORM, lazy="select", back_populates="cards")
+    set = Relationship(YugiohSetORM, lazy="select", back_populates="cards", uselist=False)

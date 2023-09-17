@@ -1,3 +1,4 @@
+import uuid
 from .exceptions.set_exceptions import SetNotFound
 from ..models.pack import Pack
 from ..repository.yugioh_set_repository import SetRepository
@@ -16,7 +17,7 @@ class PackBuilder:
         self.set_repository = set_repository
         self.card_repository = card_repository
 
-    def build_pack(self, set_id: str) -> Pack:
+    def build_pack(self, set_id: uuid.UUID) -> Pack:
         card_set = self.set_repository.get_set_by_id(set_id)
 
         if card_set is None:

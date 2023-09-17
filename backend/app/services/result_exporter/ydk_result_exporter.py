@@ -47,7 +47,7 @@ class YDKResultExporter(ResultExporter):
             if card.type in MAIN_DECK_TYPES:
                 mains.append(card)
             elif card.type in EXTRA_DECK_TYPES:
-                extra_deck.append()
+                extra_deck.append(card)
         yield from self._format_group("#main", mains)
         yield from self._format_group("#extra", extra_deck)
         yield self._format_line("!side")

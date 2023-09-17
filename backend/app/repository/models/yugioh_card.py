@@ -37,7 +37,7 @@ class YugiohCardImageORM(BaseSQLModel):
     small = Column(String(255), nullable=False)
     cropped = Column(String(255), nullable=False)
 
-    card = Relationship(YugiohCardORM, lazy="select", back_populates="images")
+    card = Relationship(YugiohCardORM, lazy="select", back_populates="images", uselist=False)
 
 
 class YugiohCardPriceORM(BaseSQLModel):
@@ -50,7 +50,7 @@ class YugiohCardPriceORM(BaseSQLModel):
     amazon_price = Column(String(255), nullable=True)
     coolstuffinc_price = Column(String(255), nullable=True)
 
-    card = Relationship(YugiohCardORM, lazy="select", back_populates="price")
+    card = Relationship(YugiohCardORM, lazy="select", back_populates="price", uselist=False)
 
 
 class YugiohCardBanListInfoORM(BaseSQLModel):
@@ -59,4 +59,4 @@ class YugiohCardBanListInfoORM(BaseSQLModel):
     format = Column(String(255), primary_key=True)
     level = Column(String(255), nullable=False)
 
-    card = Relationship(YugiohCardORM, lazy="select", back_populates="bans")
+    card = Relationship(YugiohCardORM, lazy="select", back_populates="bans", uselist=False)

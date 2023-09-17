@@ -7,8 +7,8 @@ from .exceptions.set_exceptions import NoSetOptions
 
 
 class SetDiscoveryService:
-    def __init__(self, set_to_options: dict[str, SetOptions] = None) -> None:
-        self.set_to_options = defaultdict(lambda: DEFAULT_SET_OPTIONS)
+    def __init__(self, set_to_options: dict[str, SetOptions] | None = None) -> None:
+        self.set_to_options: dict[str, SetOptions] = defaultdict(lambda: DEFAULT_SET_OPTIONS)
         if set_to_options:
             self.set_to_options.update(set_to_options)
 
