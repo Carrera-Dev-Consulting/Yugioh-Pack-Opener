@@ -40,7 +40,7 @@
   <p align="center">
     This is a web app that enables users to be able to generate and mock pack openings for use on online drafting for yugioh.
     <br />
-    <a href="https://github.com/gxldcptrick/Yugioh-Pack-Opener/wiki"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/gxldcptrick/Yugioh-Pack-Opener/tree/main/docs"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://yugioh-pack-opener.gxldcptrick.dev">View Demo</a>

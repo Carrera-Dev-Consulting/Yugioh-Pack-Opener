@@ -1,0 +1,5 @@
+#@data/values-schema
+---
+env: env
+image: latest
+port: 8080

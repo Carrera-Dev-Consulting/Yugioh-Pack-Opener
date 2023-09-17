@@ -1,0 +1,39 @@
+.yugioh-set-picker {
+    display: block;
+    justify-content: center;
+    text-align: center;
+    border: 3px solid green;
+    max-width: 300px;
+    max-height: 300px;
+    min-height: 100px;
+    min-width: 100px;
+    position: relative;
+}
+
+.yugio-set-picker-child {
+    height: 200px;
+    width: 200px;
+}
+
+.set-img-desc {
+    display: block;
+    background-color: black;
+    color: white;
+    visibility: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    width: 100%;
+}
+
+.set-img-desc > p {
+    vertical-align: middle;
+    margin-top: 25%;
+}
+
+.yugioh-set-picker:hover .set-img-desc {
+    visibility: visible;
+    opacity: 0.75;
+}

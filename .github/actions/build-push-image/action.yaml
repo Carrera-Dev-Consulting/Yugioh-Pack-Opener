@@ -1,0 +1,37 @@
+name: Build Push Image
+description: Validates the Backend codebase
+inputs:
+  context: 
+    description: Context to build image in
+    required: true
+  image-name:
+    description: Name of image to build
+    required: true
+  version:
+    description: tag for versions of image we wish to push
+    required: true
+  docker-username:
+    description: Docker User to auth with dockerhub
+    required: true
+  docker-password:
+    description: Docker Password to auth with dockerhub
+    required: true
+  docker-file: 
+    description: Dockerfile that we build
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ inputs.docker-username }}
+        password: ${{ inputs.docker-password }}
+    
+    - name: Build/Push Docker Image
+      uses: docker/build-push-action@v4
+      with:
+        context: ${{ inputs.context }}
+        tags: ${{ inputs.image-name }}:${{ inputs.version }}
+        push: true
+        file: ${{ inputs.docker-file }}

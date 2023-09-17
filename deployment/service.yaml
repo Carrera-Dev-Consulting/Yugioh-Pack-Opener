@@ -1,0 +1,18 @@
+#@ load("@ytt:data", "data")
+
+#@ port = data.values.port
+#@ env = data.values.env
+#@ full_name = "yugioh-card-puller-{}".format(data.values.app)
+#@ app_name = "{}-{}".format(full_name, data.values.env)
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: #@ "yugioh-card-puller-{}".format(env)
+  name: #@ full_name
+spec:
+  type: LoadBalancer
+  selector:
+    app: #@ app_name
+  ports:
+  - port: #@ port
