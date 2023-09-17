@@ -2,7 +2,7 @@ from typing import Protocol
 from sqlalchemy.orm import joinedload
 
 from .base import Repository
-from app.repository.models.yugioh_card import YugiohCardORM
+from .models import YugiohCardORM
 from app.models import YugiohCard, YugiohSetInfo
 
 

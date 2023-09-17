@@ -3,7 +3,7 @@ from sqlalchemy import Column, String, ForeignKey, Date, Integer
 from sqlalchemy.orm import Relationship
 
 from .base import BaseSQLModel
-from .yugioh_card import YugiohCardORM
+from .yugioh_card_orm import YugiohCardORM
 
 
 class YugiohSetORM(BaseSQLModel):
