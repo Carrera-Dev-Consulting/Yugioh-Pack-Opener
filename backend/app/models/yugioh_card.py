@@ -43,17 +43,20 @@ class YugiohSetInfo(Base):
     rarity_code: str
     price: str | None
 
+
 class YugiohCardImage(Base):
     regular_url: str
     small_url: str
     cropped_url: str
-    
+
+
 class YugiohCardPrice(Base):
     tcgplayer_price: str | None
     cardmarket_price: str | None
     ebay_price: str | None
     amazon_price: str | None
     coolstuffinc_price: str | None
+
 
 class BanInfo(Base):
     format: str
