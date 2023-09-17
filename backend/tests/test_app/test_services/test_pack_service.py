@@ -1,4 +1,5 @@
 from unittest.mock import Mock
+import uuid
 
 import pytest
 
@@ -22,7 +23,7 @@ def test_when_given_request_for_ten_packs__calls_builder_ten_times(
 ):
     total_packs = 10
     pack_builder.build_pack.return_value = Pack(cards=[])
-    request = PackRequest(pack_id="pack-id", total_desired=total_packs)
+    request = PackRequest(pack_id=uuid.uuid4(), total_desired=total_packs)
 
     sut.open_packs([request])
 
