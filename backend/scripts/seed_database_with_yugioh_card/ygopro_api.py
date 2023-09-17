@@ -120,7 +120,7 @@ class DirectoryCacher:
     def read(self, cache_entry: str, as_json=False) -> str | dict | list:
         if not self.exists(cache_entry):
             return None
-        print(f'Opening file: {self._path_for_entry(cache_entry)}')
+        print(f"Opening file: {self._path_for_entry(cache_entry)}")
         with open(self._path_for_entry(cache_entry), "r") as fp:
             if as_json:
                 return json.load(fp)
