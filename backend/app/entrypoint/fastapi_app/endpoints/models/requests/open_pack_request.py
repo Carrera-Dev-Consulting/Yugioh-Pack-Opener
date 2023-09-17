@@ -16,8 +16,7 @@ class OpenPackRequest(Base):
         examples=[
             [
                 PackSelection(
-                    packId="3918bc91-2704-42d8-a03c-bc781438c130", 
-                    totalDesired=1
+                    packId="3918bc91-2704-42d8-a03c-bc781438c130", totalDesired=1
                 )
             ]
         ],

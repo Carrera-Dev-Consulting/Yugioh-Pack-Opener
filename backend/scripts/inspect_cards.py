@@ -110,15 +110,28 @@ def save_cards_in_sets():
     pass
 
 
+def unqiue_card_types():
+    types = set()
+
+    for card in get_cards():
+        _type = card.get("type")
+        types.add(_type)
+
+    print(f"Total Types {len(types)}:")
+    for _type in types:
+        print(f" {_type!r}")
+
+
 def main():
     # print_longest_card()
     # save_into_json_output_all_kinds_of_cards()
-    save_all_rarities_defined()
+    # save_all_rarities_defined()
     # print_all_fields_on_each_card()
     # print_all_linkmarkers()
     # print_lowest_link_value()
     # print_keys_for_all_link_monsters()
     # print_cards_properties_with_banlist_info()
+    unqiue_card_types()
 
 
 if __name__ == "__main__":
