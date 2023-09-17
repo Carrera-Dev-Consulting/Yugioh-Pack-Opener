@@ -5,3 +5,4 @@ requests
 alembic
 black
 coverage
+mypy==1.5.1
