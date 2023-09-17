@@ -6,6 +6,7 @@ format:
 
 lint:
 	black --check app scripts tests
+	mypy app
 
 test:
 	pytest tests

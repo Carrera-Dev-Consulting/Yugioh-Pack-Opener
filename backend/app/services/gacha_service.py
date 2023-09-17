@@ -8,7 +8,7 @@ from app.models.gacha_configuration import (
     SingleRarityPool,
     WeightedRarityPool,
     WeightedCollection,
-    Pool
+    Pool,
 )
 from app.models.set_options import SetOptions
 from .exceptions.set_exceptions import InvalidSetOptions
@@ -51,7 +51,9 @@ class GachaService:
                     )
                     for weighted_rarity in option.weighted_rarities
                 ]
-                pool = WeightedRarityPool(quantity=cast(int, option.amount_for), weights=weights)
+                pool = WeightedRarityPool(
+                    quantity=cast(int, option.amount_for), weights=weights
+                )
             else:
                 raise InvalidSetOptions(
                     card_set.id, reason="Unable to understand option in set options"
