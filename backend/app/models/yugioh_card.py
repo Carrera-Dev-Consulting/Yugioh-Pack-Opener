@@ -43,6 +43,22 @@ class YugiohSetInfo(Base):
     rarity_code: str
     price: str | None
 
+class YugiohCardImage(Base):
+    regular_url: str
+    small_url: str
+    cropped_url: str
+    
+class YugiohCardPrice(Base):
+    tcgplayer_price: str | None
+    cardmarket_price: str | None
+    ebay_price: str | None
+    amazon_price: str | None
+    coolstuffinc_price: str | None
+
+class BanInfo(Base):
+    format: str
+    level: str
+
 
 class YugiohCard(Base):
     id: UUID
@@ -53,6 +69,16 @@ class YugiohCard(Base):
     archetype: str | None
     race: str | None
     sets: list[YugiohSetInfo] = []
+    image: YugiohCardImage | None = None
+    price: YugiohCardPrice | None = None
+    scale: int | None = None
+    defense: int | None = None
+    attack: int | None = None
+    attribute: str | None = None
+    level: int | None = None
+    link_value: int | None = None
+    links: list[str] | None = None
+    ban_list_info: list[BanInfo] = []
 
     @field_validator("type", mode="before")
     def _parse_type(cls, _type: str | None):
