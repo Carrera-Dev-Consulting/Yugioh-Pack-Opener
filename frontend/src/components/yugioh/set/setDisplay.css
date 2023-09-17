@@ -7,6 +7,7 @@
     min-height: 200px;
     min-width: 200px;
     position: relative;
+    text-align: center;
 }
 
 .yugioh-set-picker-img {
