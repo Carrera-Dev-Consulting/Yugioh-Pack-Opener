@@ -23,9 +23,6 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![Backend Tests](https://github.com/gxldCptRick/Yugioh-Pack-Opener/actions/workflows/merges-backend.yaml/badge.svg)](https://github.com/gxldCptRick/Yugioh-Pack-Opener/actions/workflows/merges-backend.yaml)
-[![Merge Frontend Workflow](https://github.com/gxldCptRick/Yugioh-Pack-Opener/actions/workflows/merges-frontend.yaml/badge.svg)](https://github.com/gxldCptRick/Yugioh-Pack-Opener/actions/workflows/merges-frontend.yaml)
-
 
 
 <!-- PROJECT LOGO -->
