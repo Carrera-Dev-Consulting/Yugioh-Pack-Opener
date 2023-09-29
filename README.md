@@ -23,9 +23,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![Backend Tests](https://github.com/gxldCptRick/Yugioh-Pack-Opener/actions/workflows/merges-backend.yaml/badge.svg)](https://github.com/gxldCptRick/Yugioh-Pack-Opener/actions/workflows/merges-backend.yaml)
-[![Merge Frontend Workflow](https://github.com/gxldCptRick/Yugioh-Pack-Opener/actions/workflows/merges-frontend.yaml/badge.svg)](https://github.com/gxldCptRick/Yugioh-Pack-Opener/actions/workflows/merges-frontend.yaml)
-
+[![Merge to Main][merge-workflow-badge]][merge-workflow-url]
 
 
 <!-- PROJECT LOGO -->
@@ -244,3 +242,5 @@ Project Link: [https://github.com/gxldcptrick/Yugioh-Pack-Opener](https://github
 [screen-shot-url]: images/screenshot.jpg
 [docker.com]: https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white
 [docker-url]: https://www.docker.com/
+[merge-workflow-badge]: https://github.com/Carrera-Dev-Consulting/Yugioh-Pack-Opener/actions/workflows/merges.yaml/badge.svg
+[merge-workflow-url]: https://github.com/Carrera-Dev-Consulting/Yugioh-Pack-Opener/actions/workflows/merges.yaml
