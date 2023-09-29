@@ -1,4 +1,4 @@
-name: Merge Backend Workflow
+name: Merge to Main
 on:
   push:
     branches:
@@ -9,6 +9,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/test-backend
+  lint-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/lint-backend
   test-web-frontend:
     runs-on: ubuntu-latest
     steps:

@@ -9,3 +9,4 @@ output.json
 .coverage
 coverage.lcov
 coverage/
+.mypy_cache/

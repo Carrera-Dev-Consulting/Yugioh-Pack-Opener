@@ -7,11 +7,11 @@ from app.models import YugiohCard, YugiohSetInfo
 
 
 class CardRepository(Protocol):
-    def get_cards_for_ids(card_ids: list[str]) -> list[YugiohCard]:
+    def get_cards_for_ids(self, card_ids: list[str]) -> list[YugiohCard]:
         pass
 
 
-def orm_to_domain_model(orm_model: YugiohCardORM) -> YugiohCardORM:
+def orm_to_domain_model(orm_model: YugiohCardORM) -> YugiohCard:
     card = YugiohCard.model_validate(orm_model)
     # format the sets to the object model expected for the api.
     card.sets = [YugiohSetInfo.model_validate(value) for value in card.sets]

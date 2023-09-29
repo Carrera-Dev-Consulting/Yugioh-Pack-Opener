@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 import random
-from typing import Protocol
+from typing import Protocol, Sequence
 
 from pydantic import field_validator
 
@@ -117,7 +117,7 @@ class WeightedRarityPool(Base):
             raise InvalidPool()
 
         selected_value = random_float(0, total_weight)
-        current_weight = 0
+        current_weight: float = 0
         for index, weight in enumerate(self.weights):
             current_weight += weight.weight
             if current_weight > selected_value:
@@ -127,6 +127,7 @@ class WeightedRarityPool(Base):
                     del self.weights[index]
                     return self.pick_weight(random_float=random_float)
                 return weight
+        return weight
 
     def pull(
         self, random_float=random.uniform, random_range=random.randrange
@@ -161,7 +162,7 @@ class Pool(Protocol):
 
 @dataclass
 class GachaConfiguration:
-    pools: list[Pool]
+    pools: Sequence[Pool]
 
     def pull(self) -> GachaPull:
         cards = [card.card_id for pool in self.pools for card in pool.pull()]

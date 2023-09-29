@@ -1,4 +1,5 @@
 from itertools import groupby
+from typing import cast
 
 from app.models.yugioh_set import YugiohSet
 from app.models.gacha_pull import GachaPull
@@ -7,6 +8,7 @@ from app.models.gacha_configuration import (
     SingleRarityPool,
     WeightedRarityPool,
     WeightedCollection,
+    Pool,
 )
 from app.models.set_options import SetOptions
 from .exceptions.set_exceptions import InvalidSetOptions
@@ -32,12 +34,13 @@ class GachaService:
             for rarity, cards in groupby(card_set.cards, key=lambda c: c.rarity)
         }
 
-        pools = []
+        pools: list[Pool] = []
 
         for option in options.options:
+            pool: Pool
             if option.rarity:
                 pool = SingleRarityPool(
-                    quantity=option.amount_for,
+                    quantity=cast(int, option.amount_for),
                     cards=items_by_rarity.get(option.rarity, []),
                 )
             elif option.weighted_rarities:
@@ -48,7 +51,9 @@ class GachaService:
                     )
                     for weighted_rarity in option.weighted_rarities
                 ]
-                pool = WeightedRarityPool(quantity=option.amount_for, weights=weights)
+                pool = WeightedRarityPool(
+                    quantity=cast(int, option.amount_for), weights=weights
+                )
             else:
                 raise InvalidSetOptions(
                     card_set.id, reason="Unable to understand option in set options"

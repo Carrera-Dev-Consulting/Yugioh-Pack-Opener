@@ -4,6 +4,10 @@ help:
 format:
 	black app scripts tests
 
+lint:
+	black --check app scripts tests
+	mypy app
+
 test:
 	pytest tests
 

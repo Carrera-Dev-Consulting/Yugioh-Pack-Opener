@@ -1,6 +1,6 @@
 import uuid
 from sqlalchemy import Column, String, ForeignKey, Date, Integer
-from sqlalchemy.orm import Relationship
+from sqlalchemy.orm import Relationship, Mapped
 
 from .base import BaseSQLModel
 from .yugioh_card_orm import YugiohCardORM
@@ -14,6 +14,10 @@ class YugiohSetORM(BaseSQLModel):
     release_date = Column(Date, nullable=True)
     card_count = Column(Integer, nullable=False)
     set_image = Column(String(255), nullable=True)
+
+    cards: Mapped[list["YugiohCardSetAssociation"]] = Relationship(
+        "yugioh_card_set_associations", lazy="select", uselist=True
+    )
 
 
 class YugiohCardSetAssociation(BaseSQLModel):
@@ -33,6 +37,9 @@ class YugiohCardSetAssociation(BaseSQLModel):
         YugiohCardORM,
         lazy="select",
         back_populates="sets",
+        uselist=False,
     )
 
-    set = Relationship(YugiohSetORM, lazy="select", back_populates="cards")
+    set = Relationship(
+        YugiohSetORM, lazy="select", back_populates="cards", uselist=False
+    )
