@@ -1,11 +1,14 @@
-name: Merge Frontend Workflow
+name: Merge Backend Workflow
 on:
   push:
-    paths:
-      - "frontend/**/*"
     branches:
       - main
 jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/test-backend
   test-web-frontend:
     runs-on: ubuntu-latest
     steps:
@@ -16,3 +19,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/test-mobile-frontend
+    
+  
