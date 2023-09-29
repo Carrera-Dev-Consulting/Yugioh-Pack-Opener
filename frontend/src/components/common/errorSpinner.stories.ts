@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ErrorSpinner } from './errorSpinner';
 
 const meta = {
-    title: 'ErrorSpinner',
+    title: 'Common/ErrorSpinner',
     component: ErrorSpinner,
     tags: [],
     argTypes: {

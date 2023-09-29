@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { BaseSpinner } from './BaseSpinner';
 
 const meta = {
-    title: 'BaseSpinner',
+    title: 'Common/BaseSpinner',
     component: BaseSpinner,
     tags: [],
     argTypes: {

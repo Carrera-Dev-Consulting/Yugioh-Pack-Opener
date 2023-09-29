@@ -1,9 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import { YugiohSetDisplay } from './setDisplay';
 
 import YugiohSet from '../../../models/yugioh/YugiohSet';
 
-test('render yugioh set display on screen', () => {
+test('render yugioh set display on screen with image', () => {
     const setWithImage = {
         id: 'setWithImage',
         name: 'set with image',
@@ -13,7 +13,7 @@ test('render yugioh set display on screen', () => {
     render(
         <YugiohSetDisplay set={setWithImage}/>
     );
-    const image = screen.getByAltText(setWithImage.name);
+    const image = screen.getByAltText(`${setWithImage.name} set image`);
     expect(image).toBeInTheDocument();
 });
 
@@ -27,6 +27,43 @@ test('render component with no set image', () => {
     render(
         <YugiohSetDisplay set={setWithoutImage}/>
     );
-    const image = screen.getByText(`No set image to display for ${setWithoutImage.name}`);
+    const image = screen.getByAltText(`${setWithoutImage.name} set image`);
     expect(image).toBeInTheDocument();
+});
+
+test('count of 0 does not render on screen', () => {
+    const setWithoutImage = {
+        id: 'setWithImage',
+        name: 'set without image',
+        cards: [],
+        setImage: ''
+    } as YugiohSet;
+
+    render(
+        <YugiohSetDisplay set={setWithoutImage}/>
+    );
+    const displayCount = screen.queryByTestId(/displayed-count/);
+    expect(displayCount).toBe(null);
+});
+
+test('count of 1 does render on screen', () => {
+    const setWithoutImage = {
+        id: 'setWithImage',
+        name: 'set without image',
+        cards: [],
+        setImage: ''
+    } as YugiohSet;
+
+    render(
+        <YugiohSetDisplay set={setWithoutImage}/>
+    );
+    const clickableDiv = screen.getByTestId(/clickable-div/);
+    
+    act(() => {
+        clickableDiv.click();    
+    })
+    const displayCount = screen.getByTestId(/displayed-count/);
+    expect(clickableDiv).toBeInTheDocument();
+    expect(displayCount).toBeInTheDocument();
+    expect(displayCount).toContainHTML('1');
 });

@@ -1,6 +1,6 @@
 import React from "react"
+import { YugiohSetImage } from './setImage';
 import './setDisplay.css';
-// import Layout from "../../../components/layout"
 
 import YugiohSet from "../../../models/yugioh/YugiohSet"
 
@@ -10,21 +10,20 @@ type setDisplayProps = {
 
 
 export const YugiohSetDisplay: React.FC<setDisplayProps> = (props: setDisplayProps) => {
-    if (props.set.setImage)
-        return <div className="yugioh-set-picker">
-                <img
-                    className="yugioh-set-picker-img yugio-set-picker-child"
-                    alt={props.set.name}
-                    src={props.set.setImage}
-                />
-                <div className="set-img-desc yugio-set-picker-child">
-                    <p>{props.set.name}</p>
+    const [count, setCount] = React.useState<number>(0);
+
+    return <div className="yugioh-set-picker"
+            >
+                <div onClick={() => setCount(count + 1)} data-testid='clickable-div'>
+                    <YugiohSetImage set={props.set}/>
+                    {count > 0 && <p className="set-selected-count" data-testid="displayed-count">{count}</p>}
                 </div>
-            </div>
-    else
-        return <div className="yugioh-set-picker">
-                <p className="yugioh-set-picker-no-img">No set image to display for {props.set.name}</p>
-                {/* add blank square here */}
-            </div>
+                {count > 0 && <p
+                    className="set-decrement-count"
+                    onClick={() => setCount((count || 1) - 1)}
+                    >
+                        X
+                    </p>}
+        </div>
 }
 
