@@ -12,7 +12,7 @@ runs:
       working-directory: ./backend
       run: pip install -r requirements-dev.txt
 
-    - name: Run All Tests
+    - name: Run Linter
       shell: bash
       working-directory: ./backend
       run: make lint
