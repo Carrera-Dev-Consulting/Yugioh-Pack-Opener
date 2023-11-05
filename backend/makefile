@@ -28,6 +28,9 @@ run-docker:
 	docker build -f docker/Dockerfile -t backend
 	docker run -n backend-server -p 8079:8080 -d backend
 
+serve-docs:
+	pdoc app
+
 run:
 	make run-locally
 
