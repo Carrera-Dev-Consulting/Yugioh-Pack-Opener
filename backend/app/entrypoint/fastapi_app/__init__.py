@@ -1,12 +1,18 @@
 from logging import getLogger
+
 from fastapi import FastAPI
 import uvicorn
+from starlette.middleware.sessions import SessionMiddleware
 
+from app.config import server_config
 from app.services.logging import configure_logging
 from .endpoints import api_router
 
+config = server_config()
+
 app = FastAPI()
 app.include_router(api_router)
+app.add_middleware(SessionMiddleware, secret_key=config.app_secret_key)
 
 
 def main():
