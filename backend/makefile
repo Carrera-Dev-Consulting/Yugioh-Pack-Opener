@@ -46,3 +46,6 @@ drop-database:
 
 create-database:
 	docker exec -it docker_database_1 mysql -u root -p -e "CREATE DATABASE yugioh_db;"
+
+doc:
+	pdoc app
