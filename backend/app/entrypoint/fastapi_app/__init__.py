@@ -10,7 +10,7 @@ app.include_router(api_router)
 
 
 def main():
-    configure_logging()
+    log_config = configure_logging()
     logger = getLogger(__name__)
     logger.info("Starting up server")
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run(app, host="0.0.0.0", port=8080, log_config=log_config)
