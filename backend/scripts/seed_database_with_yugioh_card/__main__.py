@@ -41,17 +41,17 @@ def main(
     ensure_directory(set_images_directory)
 
     api_handler = YGOProAPIHandler(cache_directory)
-    # db_layer = DBLayer(db_url)
+    db_layer = DBLayer(db_url)
     card_sets = api_handler.get_sets()
     for card_set in card_sets:
         api_handler.save_set_images(card_set, set_images_directory)
 
-    # db_layer.save_sets_in_database(card_sets)
+    db_layer.save_sets_in_database(card_sets)
 
     cards = api_handler.get_cards()
     for card in cards:
         api_handler.save_card_images(card, card_json_images_directory)
-    # db_layer.save_cards_in_database(cards)
+    db_layer.save_cards_in_database(cards)
 
 
 if __name__ == "__main__":
