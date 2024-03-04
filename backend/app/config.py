@@ -16,6 +16,9 @@ class LogLevel(str, Enum):
     ERROR = "ERROR"
     CRITICAL = "CRITICAL"
 
+    def __str__(self) -> str:
+        return self.value
+
 
 class ServerConfig(BaseSettings):
     env: str = "LOCAL"
