@@ -13,10 +13,9 @@ class YugiohSetORM(BaseSQLModel):
     name = Column(String(255), nullable=False)
     release_date = Column(Date, nullable=True)
     card_count = Column(Integer, nullable=False)
-    set_image = Column(String(255), nullable=True)
 
     cards: Mapped[list["YugiohCardSetAssociation"]] = Relationship(
-        "yugioh_card_set_associations", lazy="select", uselist=True
+        "YugiohCardSetAssociation", lazy="select", uselist=True
     )
 
 

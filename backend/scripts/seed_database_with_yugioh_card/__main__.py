@@ -21,10 +21,10 @@ def timer(message: str):
 
 
 @click.command()
-@click.option("--db-url", type=str, required=True)
-@click.option("--cache-directory", default="api-responses")
-@click.option("--card-json-images-directory", default="cards")
-@click.option("--set-images-directory", default="sets")
+@click.option("-d", "--db-url", type=str, required=True)
+@click.option("-c", "--cache-directory", default="api-responses")
+@click.option("-i", "--card-json-images-directory", default="cards")
+@click.option("-s", "--set-images-directory", default="sets")
 @timer("Finished with main")
 def main(
     db_url: str,

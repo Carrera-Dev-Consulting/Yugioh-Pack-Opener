@@ -80,7 +80,7 @@ class DBLayer:
             for key in existing:
                 index_by_id.pop(key, None)
             # save the new records
-            save_sets_in_db(index_by_id.values())
+            save_sets_in_db(session, index_by_id.values())
 
 
 def limit_cards_not_in_db(
