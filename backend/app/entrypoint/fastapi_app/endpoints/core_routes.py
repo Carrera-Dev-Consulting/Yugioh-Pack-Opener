@@ -4,7 +4,7 @@ from .models.requests.open_pack_request import OpenPackRequest
 from app.services.pack_service import PackService
 from ..dependencies import pack_service
 
-router = APIRouter()
+router = APIRouter(tags=["core"])
 
 
 @router.post("/packs/open")
