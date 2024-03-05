@@ -1,4 +1,4 @@
-FROM python:3.10.0-slim-buster
+FROM python:3.10.11-slim-buster
 
 COPY app app
 COPY requirements.txt requirements.txt
