@@ -35,7 +35,7 @@ class YugiohCardORM(BaseSQLModel):
         "YugiohCardBanListInfoORM", uselist=True, lazy="select"
     )
 
-    sets: Mapped[list["YugiohCardSetAssociation"]] = Relationship(
+    sets: Mapped[list["YugiohCardSetAssociation"]] = Relationship(  # type: ignore
         "YugiohCardSetAssociation", uselist=True, lazy="select"
     )
 
