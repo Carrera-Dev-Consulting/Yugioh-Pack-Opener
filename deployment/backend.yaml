@@ -31,3 +31,23 @@ spec:
       containers:
         - name: fastapi-instance
           image: #@ "gxldcptrick/yugioh-card-backend:{}".format(image)
+          env:
+          - name: LOG_LEVEL
+            value: DEBUG
+          - name: LOG_FORMAT
+            value: json
+          - name: AUTH0_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: auth0-yugioh
+                key: auth0_client_id
+          - name: AUTH0_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: auth0-yugioh
+                key: auth0_client_secret
+          - name: APP_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: auth0-yugioh
+                key: app_secret
