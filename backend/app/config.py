@@ -29,6 +29,7 @@ class ServerConfig(BaseSettings):
     auth0_domain: str = "gxldcptrick-yugioh-card-puller.us.auth0.com"
     app_secret_key: str = token_hex(28)
 
+
 @cache
 def server_config():
     return ServerConfig()
