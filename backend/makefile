@@ -40,6 +40,8 @@ create-migration:
 upgrade-db:
 	alembic upgrade head
 
+seed-database:
+	python -m scripts.seed_database_with_yugioh_card -d "mysql+pymysql://root:password@localhost/yugioh_db"
 
 mysql-shell-local:
 	docker exec -it docker_database_1 mysql -u root -p
@@ -49,6 +51,8 @@ drop-database:
 
 create-database:
 	docker exec -it docker_database_1 mysql -u root -p -e "CREATE DATABASE yugioh_db;"
+database-up:
+	docker-compose -f docker/docker-compose.yaml up -d database
 
 doc:
 	pdoc app

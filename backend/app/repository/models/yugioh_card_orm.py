@@ -1,6 +1,6 @@
 import uuid
 from sqlalchemy import Column, String, ForeignKey, Integer
-from sqlalchemy.orm import Relationship
+from sqlalchemy.orm import Relationship, Mapped
 
 from .base import BaseSQLModel
 
@@ -25,20 +25,18 @@ class YugiohCardORM(BaseSQLModel):
     link_value = Column(Integer, nullable=True)
     links = Column(
         String(255), nullable=True
-    )  # will be a comma-separated list of the ygopro link markers
+    )  # will be a comma-separated list of the ygopro link marker
 
+    price: Mapped["YugiohCardPriceORM"] = Relationship(
+        "YugiohCardPriceORM", lazy="select", uselist=False
+    )
 
-class YugiohCardImageORM(BaseSQLModel):
-    __tablename__ = "yugioh_card_images"
+    bans: Mapped[list["YugiohCardBanListInfoORM"]] = Relationship(
+        "YugiohCardBanListInfoORM", uselist=True, lazy="select"
+    )
 
-    id = Column(String(36), primary_key=True, default=uuid.uuid4)
-    card_id = Column(String(36), ForeignKey(YugiohCardORM.id), nullable=False)
-    regular = Column(String(255), nullable=False)
-    small = Column(String(255), nullable=False)
-    cropped = Column(String(255), nullable=False)
-
-    card = Relationship(
-        YugiohCardORM, lazy="select", back_populates="images", uselist=False
+    sets: Mapped[list["YugiohCardSetAssociation"]] = Relationship(  # type: ignore
+        "YugiohCardSetAssociation", uselist=True, lazy="select"
     )
 
 

@@ -21,10 +21,10 @@ def timer(message: str):
 
 
 @click.command()
-@click.option("--db-url", type=str, required=True)
-@click.option("--cache-directory", default="api-responses")
-@click.option("--card-json-images-directory", default="cards")
-@click.option("--set-images-directory", default="sets")
+@click.option("-d", "--db-url", type=str, required=True)
+@click.option("-c", "--cache-directory", default="api-responses")
+@click.option("-i", "--card-json-images-directory", default="cards")
+@click.option("-s", "--set-images-directory", default="sets")
 @timer("Finished with main")
 def main(
     db_url: str,
@@ -41,17 +41,17 @@ def main(
     ensure_directory(set_images_directory)
 
     api_handler = YGOProAPIHandler(cache_directory)
-    # db_layer = DBLayer(db_url)
+    db_layer = DBLayer(db_url)
     card_sets = api_handler.get_sets()
     for card_set in card_sets:
         api_handler.save_set_images(card_set, set_images_directory)
 
-    # db_layer.save_sets_in_database(card_sets)
+    db_layer.save_sets_in_database(card_sets)
 
     cards = api_handler.get_cards()
     for card in cards:
         api_handler.save_card_images(card, card_json_images_directory)
-    # db_layer.save_cards_in_database(cards)
+    db_layer.save_cards_in_database(cards)
 
 
 if __name__ == "__main__":

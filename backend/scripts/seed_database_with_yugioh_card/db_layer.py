@@ -72,8 +72,15 @@ class DBLayer:
                 session.commit()
 
     def save_sets_in_database(self, card_sets: list[YGoProSet]):
+        index_by_id = {card_set.set_code: card_set for card_set in card_sets}
         with self.scoped_session() as session:
-            pass
+            # get existing sets in the db
+            existing = get_sets_from_database(session)
+            # subtract the ones we already track from the cards we just see
+            for key in existing:
+                index_by_id.pop(key, None)
+            # save the new records
+            save_sets_in_db(session, index_by_id.values())
 
 
 def limit_cards_not_in_db(
@@ -105,3 +112,15 @@ def limit_card_sets_not_in_db(
 def get_sets_from_database(session: sqlalchemy.orm.Session) -> dict[str, YugiohSetORM]:
     sets: list[YugiohSetORM] = session.query(YugiohSetORM).all()
     return {yugioh_set.set_id: yugioh_set for yugioh_set in sets}
+
+
+def save_sets_in_db(session: sqlalchemy.orm.Session, card_sets: list[YGoProSet]):
+    for card_set in card_sets:
+        db_model = YugiohSetORM(
+            set_id=card_set.set_code,
+            name=card_set.set_name,
+            release_date=card_set.tcg_date,
+            card_count=card_set.num_of_cards,
+        )
+        session.add(db_model)
+    session.commit()
