@@ -1,3 +1,4 @@
+from logging import getLogger
 from urllib.parse import urlencode
 from authlib.integrations.starlette_client import OAuth
 from fastapi import APIRouter, Depends, Request
@@ -7,6 +8,8 @@ from app.config import server_config
 
 oauth = OAuth()
 config = server_config()
+logger = getLogger(__name__)
+
 oauth.register(
     "auth0",
     client_id=config.auth0_client_id,
@@ -22,9 +25,9 @@ router = APIRouter(tags=["oauth", "security"])
 
 @router.get("/login", name="auth:login")
 async def login(request: Request):
-    return await oauth.auth0.authorize_redirect(
-        request, str(request.url_for("auth:callback"))
-    )
+    callback_url = str(request.url_for("auth:callback"))
+    logger.info(f"Creating callback url with: {callback_url}, {request.headers}")
+    return await oauth.auth0.authorize_redirect(request, callback_url)
 
 
 @router.get("/callback", name="auth:callback")
