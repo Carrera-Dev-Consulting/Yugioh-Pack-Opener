@@ -1,9 +1,6 @@
 #@ load("@ytt:data", "data")
 
 #@ namespace = "yugioh-card-puller-{}".format(data.values.env)
-#@ frontend = "yugioh-card-puller-frontend-{}".format(data.values.env)
-#@ backend = "yugioh-card-puller-backend-{}".format(data.values.env)
-#@ images = "yugioh-card-puller-images-{}".format(data.values.env)
 
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -20,20 +17,20 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: #@ backend
+                name: yugioh-card-puller-backend
                 port:
                   number: 8080
           - path: /images
             pathType: Prefix
             backend:
               service:
-                name: #@ images
+                name: yugioh-card-puller-images
                 port:
                   number: 80
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: #@ frontend
+                name: yugioh-card-puller-frontend
                 port:
                   number: 80
