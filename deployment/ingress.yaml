@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: #@ "yugioh-card-puller.{}.gxldcptrick.dev".format(data.values.env)
+    - host: #@ "yugioh-card-puller-{}.gxldcptrick.dev".format(data.values.env)
       http:
         paths:
           - path: /api
