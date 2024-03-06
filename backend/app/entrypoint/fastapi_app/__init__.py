@@ -27,4 +27,6 @@ def unauthenticated(request: Request, exc: Unauthenticated):
 def main():
     log_config = configure_logging()
     logger.info("Starting up server")
-    uvicorn.run(app, host="0.0.0.0", port=8080, log_config=log_config, proxy_headers=True)
+    uvicorn.run(
+        app, host="0.0.0.0", port=8080, log_config=log_config, proxy_headers=True
+    )
