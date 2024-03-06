@@ -1,0 +1,36 @@
+#@ load("@ytt:data", "data")
+
+#@ namespace = "yugioh-card-puller-{}".format(data.values.env)
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: #@ namespace
+  name: #@ "yugioh-ingress-{}".format(data.values.env)
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: #@ "yugioh-card-puller-{}.gxldcptrick.dev".format(data.values.env)
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: yugioh-card-puller-backend
+                port:
+                  number: 8080
+          - path: /images
+            pathType: Prefix
+            backend:
+              service:
+                name: yugioh-card-puller-images
+                port:
+                  number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: yugioh-card-puller-frontend
+                port:
+                  number: 80
