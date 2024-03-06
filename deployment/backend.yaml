@@ -39,7 +39,7 @@ spec:
             - name: LOG_LEVEL
               value: DEBUG
             - name: LOG_FORMAT
-              value: json
+              value: pretty
             - name: AUTH0_CLIENT_ID
               valueFrom:
                 secretKeyRef:
