@@ -36,14 +36,15 @@ class ServerConfig(BaseSettings):
 
     @cached_property
     def mysql_url(self):
-        return MySQLDsn.build(
+        value: MySQLDsn = MySQLDsn.build(
             scheme="mysql+pymysql",
             username=self.mysql_username,
             password=self.mysql_password,
             host=self.mysql_host,
             port=self.mysql_port,
-            path="/yugioh_db",
+            path="yugioh_db",
         )
+        return str(value)
 
 
 @cache
