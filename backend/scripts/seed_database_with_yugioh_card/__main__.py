@@ -5,6 +5,7 @@ import os
 
 from .db_layer import DBLayer
 from .ygopro_api import YGOProAPIHandler
+from app.config import server_config
 
 
 def ensure_directory(path):
@@ -21,7 +22,7 @@ def timer(message: str):
 
 
 @click.command()
-@click.option("-d", "--db-url", type=str, required=True)
+@click.option("-d", "--db-url", type=str, required=False)
 @click.option("-c", "--cache-directory", default="api-responses")
 @click.option("-i", "--card-json-images-directory", default="cards")
 @click.option("-s", "--set-images-directory", default="sets")
@@ -32,6 +33,8 @@ def main(
     card_json_images_directory: str,
     set_images_directory: str,
 ):
+    if db_url is None:
+        db_url = server_config().mysql_url
     cache_directory = f"cached/{cache_directory}"
     card_json_images_directory = f"cached/{card_json_images_directory}"
     set_images_directory = f"cached/{set_images_directory}"
