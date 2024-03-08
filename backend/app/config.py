@@ -1,6 +1,7 @@
 from enum import Enum
-from functools import cache
+from functools import cache, cached_property
 from pydantic_settings import BaseSettings
+from pydantic.networks import MySQLDsn
 from secrets import token_hex
 
 
@@ -28,6 +29,21 @@ class ServerConfig(BaseSettings):
     auth0_client_secret: str
     auth0_domain: str = "gxldcptrick-yugioh-card-puller.us.auth0.com"
     app_secret_key: str = token_hex(28)
+    mysql_host: str = "localhost"
+    mysql_port: int = 3306
+    mysql_username: str = "root"
+    mysql_password: str = "password"
+
+    @cached_property
+    def mysql_url(self):
+        return MySQLDsn.build(
+            scheme="mysql+pymysql",
+            username=self.mysql_username,
+            password=self.mysql_password,
+            host=self.mysql_host,
+            port=self.mysql_port,
+            path="/yugioh_db",
+        )
 
 
 @cache
