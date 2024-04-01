@@ -8,7 +8,7 @@
 #@ port = 8080
 
 #@ def labels():
-  app: #@ app
+app: #@ app
 #@ end
 ---
 apiVersion: apps/v1
@@ -55,3 +55,12 @@ spec:
                 secretKeyRef:
                   name: auth0-yugioh
                   key: app_secret
+            - name: MYSQL_HOST
+              value: #@ "mysql.{}.svc".format(namespace)
+            - name: MYSQL_USERNAME
+              value: root # TODO (Milo): Create  a user account specific to yugioh_db
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-admin-creds # TODO (Milo): Create a user account specific to yugioh_db
+                  key: password
