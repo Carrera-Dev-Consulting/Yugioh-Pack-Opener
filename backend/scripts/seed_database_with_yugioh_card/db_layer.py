@@ -51,8 +51,8 @@ def create_card_set_association(
     card_set: YGOProSetReference, orm_card: YugiohCardORM, orm_set: YugiohSetORM
 ) -> YugiohCardSetAssociation:
     return YugiohCardSetAssociation(
-        card_id=orm_card.id,
-        set_id=orm_set.id,
+        card=orm_card,
+        set=orm_set,
         rarity=card_set.set_rarity,
         rarity_code=card_set.set_rarity_code,
         price=card_set.set_price,
@@ -92,15 +92,10 @@ class DBLayer:
                     for card_set in card.card_sets:
                         orm_set = orm_sets.get(card_set.set_code)
                         if orm_set:
-                            associations.append((card_set, orm_card, orm_set))
+                            create_card_set_association(
+                                card_set=card_set, orm_card=orm_card, orm_set=orm_set
+                            )
                 session.commit()
-                session.add_all(
-                    create_card_set_association(
-                        card_set=reference, orm_card=card, orm_set=card_set
-                    )
-                    for card, card_set, reference in associations
-                )
-                session.commit()  # Add all the associations since the cards don't exist
 
     def save_sets_in_database(self, card_sets: list[YGoProSet]):
         index_by_id = {card_set.set_code: card_set for card_set in card_sets}
