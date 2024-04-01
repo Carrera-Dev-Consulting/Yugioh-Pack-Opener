@@ -44,7 +44,7 @@ def main(
     ensure_directory(set_images_directory)
 
     api_handler = YGOProAPIHandler(cache_directory)
-    db_layer = DBLayer(db_url)
+    db_layer = DBLayer.from_connection_string(db_url)
     card_sets = api_handler.get_sets()
     for card_set in card_sets:
         api_handler.save_set_images(card_set, set_images_directory)

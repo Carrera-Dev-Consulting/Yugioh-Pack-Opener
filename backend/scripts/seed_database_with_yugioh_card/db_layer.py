@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+import functools
 from typing import Iterable, TypeVar
 import sqlalchemy
 import sqlalchemy.orm
@@ -15,14 +16,34 @@ def iter_chunk_list(items: list[T], chunk_size: int) -> Iterable[list[T]]:
     )
 
 
-def map_ygopro_to_orm(card: YGOProCard) -> YugiohCardORM:
-    return YugiohCardORM(
-        external_id=card.id,
-        name=card.name,
-        type=card.type,
-        description=card.desc,
-        archetype=card.archetype,
-        race=card.race,
+defined_columns = {m.key for m in YugiohCardORM.__table__.columns}
+
+
+@functools.singledispatch
+def map_ygopro_to_orm(ygopro_model):
+    raise NotImplemented(
+        f"Not mapping for ygopro to orm model for type: {type(ygopro_model)}"
+    )
+
+
+@map_ygopro_to_orm.register
+def _(card: YGOProCard) -> YugiohCardORM:
+    data = {"external_id": card.id, **card.model_dump()}
+    not_applicable_keys = [key for key in data if key not in defined_columns]
+
+    for key in not_applicable_keys:
+        data.pop(key, None)
+
+    return YugiohCardORM(**data)
+
+
+@map_ygopro_to_orm.register
+def _(card_set: YGoProSet) -> YugiohSetORM:
+    return YugiohSetORM(
+        set_id=card_set.set_code,
+        name=card_set.set_name,
+        release_date=card_set.tcg_date,
+        card_count=card_set.num_of_cards,
     )
 
 
@@ -39,8 +60,12 @@ def create_card_set_association(
 
 
 class DBLayer:
-    def __init__(self, connection_string: str):
-        self.engine = sqlalchemy.create_engine(connection_string)
+    def __init__(self, engine: sqlalchemy.engine.Engine):
+        self.engine = engine
+
+    @classmethod
+    def from_connection_string(cls, connection_string: str):
+        return cls(sqlalchemy.create_engine(connection_string))
 
     @contextmanager
     def scoped_session(self):
@@ -59,17 +84,23 @@ class DBLayer:
                     session.add(orm_card)
                     orm_cards[orm_card.external_id] = orm_card
                 session.commit()
-
+                associations: list[
+                    tuple[YugiohCardORM, YugiohSetORM, YGOProSetReference]
+                ] = []
                 for card in cards_chunk:
                     orm_card = orm_cards[card.id]
                     for card_set in card.card_sets:
                         orm_set = orm_sets.get(card_set.set_code)
                         if orm_set:
-                            association = create_card_set_association(
-                                card_set, orm_card, orm_set
-                            )
-                            session.add(association)
+                            associations.append((card_set, orm_card, orm_set))
                 session.commit()
+                session.add_all(
+                    create_card_set_association(
+                        card_set=reference, orm_card=card, orm_set=card_set
+                    )
+                    for card, card_set, reference in associations
+                )
+                session.commit()  # Add all the associations since the cards don't exist
 
     def save_sets_in_database(self, card_sets: list[YGoProSet]):
         index_by_id = {card_set.set_code: card_set for card_set in card_sets}
@@ -116,11 +147,6 @@ def get_sets_from_database(session: sqlalchemy.orm.Session) -> dict[str, YugiohS
 
 def save_sets_in_db(session: sqlalchemy.orm.Session, card_sets: list[YGoProSet]):
     for card_set in card_sets:
-        db_model = YugiohSetORM(
-            set_id=card_set.set_code,
-            name=card_set.set_name,
-            release_date=card_set.tcg_date,
-            card_count=card_set.num_of_cards,
-        )
+        db_model: YugiohSetORM = map_ygopro_to_orm(card_set)
         session.add(db_model)
     session.commit()
