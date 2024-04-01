@@ -1,9 +1,9 @@
 -r requirements.txt
 pytest
+pytest-cov
 requests
 alembic
 black
-coverage
 pdoc
 mypy==1.5.1
 sqlalchemy[mypy]

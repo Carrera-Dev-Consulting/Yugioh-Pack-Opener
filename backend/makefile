@@ -9,17 +9,11 @@ lint:
 	mypy app
 
 test:
-	pytest tests
+	pytest --cov=app --cov=scripts --cov-report html --cov-report term --cov-report lcov:lcov.info tests
 
-test-coverage:
-	mkdir coverage || echo 'coverage exists'
-	coverage run --data-file=coverage/.coverage -m pytest tests
-	coverage lcov --data-file=coverage/.coverage -o coverage/lcov.info
-	make render-coverage-html
-
-render-coverage-html:
-	coverage html --data-file=coverage/.coverage -d coverage/html
-	python -m http.server --directory coverage/html -b 127.0.0.1
+start-cov-server:
+	make test
+	python -m http.server --directory htmlcov -b 127.0.0.1
 
 run-locally:
 	python -m app

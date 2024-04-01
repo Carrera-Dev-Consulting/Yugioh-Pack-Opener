@@ -11,3 +11,5 @@ output.json
 coverage.lcov
 coverage/
 .mypy_cache/
+htmlcov/
+lcov.info
