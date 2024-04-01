@@ -21,7 +21,7 @@ defined_columns = {m.key for m in YugiohCardORM.__table__.columns}
 
 @functools.singledispatch
 def map_ygopro_to_orm(ygopro_model):
-    raise NotImplemented(
+    raise ValueError(
         f"Not mapping for ygopro to orm model for type: {type(ygopro_model)}"
     )
 

@@ -1,5 +1,7 @@
 from copy import deepcopy
 
+import pytest
+
 from app.repository.models.yugioh_card_orm import YugiohCardORM
 from app.repository.models.yugioh_set_orm import YugiohSetORM
 from scripts.seed_database_with_yugioh_card.db_layer import map_ygopro_to_orm
@@ -101,3 +103,8 @@ def test_when_parsing_set_to_orm__it_parses_all_fields():
     assert (
         orm.set_id == set_id
     ), f"Did not set the id as expected: actual{orm.set_id}, expected={set_id}"
+
+
+def test_when_parsing_arbitrary_obj_to_orm__raises_not_value_error():
+    with pytest.raises(ValueError):
+        map_ygopro_to_orm(object())
