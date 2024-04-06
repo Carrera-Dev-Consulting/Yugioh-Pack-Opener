@@ -15,4 +15,4 @@ runs:
     - name: Run All Tests
       shell: bash
       working-directory: ./backend
-      run: pytest tests
+      run: make test
