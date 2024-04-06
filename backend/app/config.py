@@ -35,7 +35,7 @@ class ServerConfig(BaseSettings):
     mysql_password: str = "password"
 
     @cached_property
-    def mysql_url(self):
+    def mysql_url(self) -> str:
         value: MySQLDsn = MySQLDsn.build(
             scheme="mysql+pymysql",
             username=self.mysql_username,
