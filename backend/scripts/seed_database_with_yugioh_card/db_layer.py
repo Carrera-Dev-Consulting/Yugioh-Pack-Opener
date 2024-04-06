@@ -62,6 +62,7 @@ def create_card_set_association(
 class DBLayer:
     def __init__(self, engine: sqlalchemy.engine.Engine):
         self.engine = engine
+        self.session = None
 
     @classmethod
     def from_connection_string(cls, connection_string: str):
@@ -69,14 +70,19 @@ class DBLayer:
 
     @contextmanager
     def scoped_session(self):
-        with sqlalchemy.orm.Session(self.engine) as session:
-            yield session
+        if self.session is not None:
+            yield self.session
+        else:
+            with sqlalchemy.orm.Session(self.engine) as session:
+                self.session = session
+                yield session
+                self.session = None
 
     def save_cards_in_database(self, cards: list[YGOProCard]):
         with self.scoped_session() as session:
             cards = limit_cards_not_in_db(cards, session)
             orm_cards: dict[str, YugiohCardORM] = {}
-            orm_sets = get_sets_from_database(session)
+            orm_sets = self.get_sets_from_database()
 
             for cards_chunk in iter_chunk_list(cards, 50):
                 for card in cards_chunk:
@@ -84,9 +90,6 @@ class DBLayer:
                     session.add(orm_card)
                     orm_cards[orm_card.external_id] = orm_card
                 session.commit()
-                associations: list[
-                    tuple[YugiohCardORM, YugiohSetORM, YGOProSetReference]
-                ] = []
                 for card in cards_chunk:
                     orm_card = orm_cards[card.id]
                     for card_set in card.card_sets:
@@ -101,12 +104,17 @@ class DBLayer:
         index_by_id = {card_set.set_code: card_set for card_set in card_sets}
         with self.scoped_session() as session:
             # get existing sets in the db
-            existing = get_sets_from_database(session)
+            existing = self.get_sets_from_database()
             # subtract the ones we already track from the cards we just see
             for key in existing:
                 index_by_id.pop(key, None)
             # save the new records
             save_sets_in_db(session, index_by_id.values())
+
+    def get_sets_from_database(self) -> dict[str, YugiohSetORM]:
+        with self.scoped_session() as session:
+            sets: list[YugiohSetORM] = session.query(YugiohSetORM).all()
+        return {yugioh_set.set_id: yugioh_set for yugioh_set in sets}
 
 
 def limit_cards_not_in_db(
@@ -133,11 +141,6 @@ def limit_card_sets_not_in_db(
         .all()
     }
     return [card_set for card_set in card_sets if card_set.set_code not in stored_ids]
-
-
-def get_sets_from_database(session: sqlalchemy.orm.Session) -> dict[str, YugiohSetORM]:
-    sets: list[YugiohSetORM] = session.query(YugiohSetORM).all()
-    return {yugioh_set.set_id: yugioh_set for yugioh_set in sets}
 
 
 def save_sets_in_db(session: sqlalchemy.orm.Session, card_sets: list[YGoProSet]):
