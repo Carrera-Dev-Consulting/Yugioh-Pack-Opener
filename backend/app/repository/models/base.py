@@ -8,4 +8,4 @@ def base_model_str(self):
     return f"{type(self)}({set_values})"
 
 
-BaseSQLModel.__str__ = base_model_str
+BaseSQLModel.__repr__ = base_model_str
