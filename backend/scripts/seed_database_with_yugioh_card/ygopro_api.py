@@ -130,7 +130,7 @@ class DirectoryCacher:
 
     def exists(self, cache_entry: str) -> bool:
         return os.path.exists(self._path_for_entry(cache_entry))
-    
+
     def __contains__(self, cache_entry: str):
         return self.exists(cache_entry)
 
@@ -174,7 +174,7 @@ class YGOProAPIHandler:
             return
 
         if os.path.exists(localpath):
-            print("File already exists skipping...")
+            logger.info(f"File: {localpath} already exists")
             return
 
         with self._make_request(url, stream=True) as response:
