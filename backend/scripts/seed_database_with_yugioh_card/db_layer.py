@@ -101,9 +101,10 @@ class DBLayer:
                     for card_set in card.card_sets:
                         orm_set = orm_sets.get(card_set.set_code)
                         if orm_set:
-                            create_card_set_association(
+                            association = create_card_set_association(
                                 card_set=card_set, orm_card=orm_card, orm_set=orm_set
                             )
+                            session.add(association)
                 session.commit()
 
     def save_sets_in_database(self, card_sets: list[YGOProSet]):
