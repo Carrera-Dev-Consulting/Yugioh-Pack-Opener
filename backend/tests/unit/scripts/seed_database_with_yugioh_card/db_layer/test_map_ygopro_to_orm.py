@@ -5,7 +5,7 @@ import pytest
 from app.repository.models.yugioh_card_orm import YugiohCardORM
 from app.repository.models.yugioh_set_orm import YugiohSetORM
 from scripts.seed_database_with_yugioh_card.db_layer import map_ygopro_to_orm
-from scripts.seed_database_with_yugioh_card.ygopro_api import YGOProCard, YGoProSet
+from scripts.seed_database_with_yugioh_card.ygopro_api import YGOProCard, YGOProSet
 
 
 card = {
@@ -94,7 +94,7 @@ card_set = {
 
 def test_when_parsing_set_to_orm__it_parses_all_fields():
     raw_set = deepcopy(card_set)
-    model = YGoProSet.model_validate(raw_set)
+    model = YGOProSet.model_validate(raw_set)
 
     set_id = raw_set.get("set_code")
 

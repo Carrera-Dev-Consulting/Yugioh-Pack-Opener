@@ -5,7 +5,7 @@ import sqlalchemy
 import sqlalchemy.orm
 
 from app.repository.models import YugiohCardORM, YugiohSetORM, YugiohCardSetAssociation
-from .ygopro_api import YGOProCard, YGOProSetReference, YGoProSet
+from .ygopro_api import YGOProCard, YGOProSetReference, YGOProSet
 
 T = TypeVar("T")
 
@@ -28,17 +28,23 @@ def map_ygopro_to_orm(ygopro_model):
 
 @map_ygopro_to_orm.register
 def _(card: YGOProCard) -> YugiohCardORM:
-    data = {"external_id": card.id, **card.model_dump()}
+    data = card.model_dump()
     not_applicable_keys = [key for key in data if key not in defined_columns]
 
     for key in not_applicable_keys:
         data.pop(key, None)
 
+    data["description"] = card.desc
+    data["link_value"] = card.linkval
+    data["links"] = ",".join(card.linkmarkers) if card.linkmarkers else None
+    data["external_id"] = card.id
+    data.pop("id", None)  # need to let the orm handle this
+
     return YugiohCardORM(**data)
 
 
 @map_ygopro_to_orm.register
-def _(card_set: YGoProSet) -> YugiohSetORM:
+def _(card_set: YGOProSet) -> YugiohSetORM:
     return YugiohSetORM(
         set_id=card_set.set_code,
         name=card_set.set_name,
@@ -100,7 +106,7 @@ class DBLayer:
                             )
                 session.commit()
 
-    def save_sets_in_database(self, card_sets: list[YGoProSet]):
+    def save_sets_in_database(self, card_sets: list[YGOProSet]):
         index_by_id = {card_set.set_code: card_set for card_set in card_sets}
         with self.scoped_session() as session:
             # get existing sets in the db
@@ -131,7 +137,7 @@ def limit_cards_not_in_db(
 
 
 def limit_card_sets_not_in_db(
-    card_sets: list[YGoProSet], session: sqlalchemy.orm.Session
+    card_sets: list[YGOProSet], session: sqlalchemy.orm.Session
 ):
     set_ids = [card_set.set_code for card_set in card_sets]
     stored_ids = {
@@ -143,7 +149,7 @@ def limit_card_sets_not_in_db(
     return [card_set for card_set in card_sets if card_set.set_code not in stored_ids]
 
 
-def save_sets_in_db(session: sqlalchemy.orm.Session, card_sets: Iterable[YGoProSet]):
+def save_sets_in_db(session: sqlalchemy.orm.Session, card_sets: Iterable[YGOProSet]):
     for card_set in card_sets:
         db_model: YugiohSetORM = map_ygopro_to_orm(card_set)
         session.add(db_model)

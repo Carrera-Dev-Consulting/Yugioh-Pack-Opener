@@ -8,7 +8,7 @@ from .base import BaseSQLModel
 class YugiohCardORM(BaseSQLModel):
     __tablename__ = "yugioh_cards"
 
-    id = Column(String(36), primary_key=True, default=uuid.uuid4)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     external_id = Column(
         String(512), nullable=False
     )  # id with whatever datasource we use

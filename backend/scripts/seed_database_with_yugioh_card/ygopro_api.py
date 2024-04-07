@@ -11,7 +11,7 @@ import requests
 from pydantic import BaseModel, Field
 
 
-class YGoProSet(BaseModel):
+class YGOProSet(BaseModel):
     set_name: str
     set_code: str
     num_of_cards: int
@@ -201,14 +201,14 @@ class YGOProAPIHandler:
                 image.image_url_small, f"{directory}/{card.id}-small.jpg"
             )
 
-    def get_sets(self) -> list[YGoProSet]:
+    def get_sets(self) -> list[YGOProSet]:
         raw_response = self._get_or_cache_response(
             "card_sets.json",
             "https://db.ygoprodeck.com/api/v7/cardsets.php",
         )
-        return [YGoProSet.model_validate(card_set) for card_set in raw_response]
+        return [YGOProSet.model_validate(card_set) for card_set in raw_response]
 
-    def save_set_images(self, card_set: YGoProSet, directory: str):
+    def save_set_images(self, card_set: YGOProSet, directory: str):
         self._request_stream_to_file(
             card_set.set_image, f"{directory}/{card_set.set_code}.jpg"
         )
