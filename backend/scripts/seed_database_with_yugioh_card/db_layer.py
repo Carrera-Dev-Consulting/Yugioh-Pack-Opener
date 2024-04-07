@@ -1,6 +1,6 @@
 from contextlib import contextmanager
 import functools
-from typing import Iterable, TypeVar
+from typing import Iterable, TypeVar, cast
 import sqlalchemy
 import sqlalchemy.orm
 
@@ -114,7 +114,7 @@ class DBLayer:
     def get_sets_from_database(self) -> dict[str, YugiohSetORM]:
         with self.scoped_session() as session:
             sets: list[YugiohSetORM] = session.query(YugiohSetORM).all()
-        return {yugioh_set.set_id: yugioh_set for yugioh_set in sets}
+        return {cast(str, yugioh_set.set_id): yugioh_set for yugioh_set in sets}
 
 
 def limit_cards_not_in_db(
@@ -143,7 +143,7 @@ def limit_card_sets_not_in_db(
     return [card_set for card_set in card_sets if card_set.set_code not in stored_ids]
 
 
-def save_sets_in_db(session: sqlalchemy.orm.Session, card_sets: list[YGoProSet]):
+def save_sets_in_db(session: sqlalchemy.orm.Session, card_sets: Iterable[YGoProSet]):
     for card_set in card_sets:
         db_model: YugiohSetORM = map_ygopro_to_orm(card_set)
         session.add(db_model)

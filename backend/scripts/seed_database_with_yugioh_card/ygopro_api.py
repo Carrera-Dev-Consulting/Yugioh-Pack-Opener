@@ -4,7 +4,7 @@ from enum import Enum
 import time
 import json
 import os
-from typing import IO, Any, Callable
+from typing import IO, Any, Callable, Generator
 
 
 import requests
@@ -96,9 +96,9 @@ def null_transform(response_body):
 
 
 class DirectoryCacher:
-    def __init__(self, directory) -> None:
+    def __init__(self, directory: str) -> None:
         self.directory = directory
-        self.computed_entries = {}
+        self.computed_entries: dict[str, Any] = {}
 
     def _path_for_entry(self, cache_entry: str):
         if cache_entry not in self.computed_entries:
@@ -106,7 +106,9 @@ class DirectoryCacher:
         return self.computed_entries[cache_entry]
 
     @contextmanager
-    def open_write_buffer(self, cache_entry, binary=False) -> IO[Any]:
+    def open_write_buffer(
+        self, cache_entry, binary=False
+    ) -> Generator[IO[Any], Any, None]:
         flags = ["w"]
         if binary:
             flags.append("b")
@@ -119,7 +121,7 @@ class DirectoryCacher:
 
     def read(self, cache_entry: str, as_json=False) -> str | dict | list:
         if not self.exists(cache_entry):
-            return None
+            return "{}" if as_json else {}
         print(f"Opening file: {self._path_for_entry(cache_entry)}")
         with open(self._path_for_entry(cache_entry), "r") as fp:
             if as_json:
@@ -170,7 +172,7 @@ class YGOProAPIHandler:
         cache_file_name: str,
         api_path: str,
         transform_response: Callable[[dict | list], dict | list] = null_transform,
-    ) -> list | dict:
+    ) -> list | dict | str:
         if self.cacher.exists(cache_file_name):
             return self.cacher.read(cache_file_name, as_json=True)
 

@@ -6,7 +6,7 @@ format:
 
 lint:
 	black --check app scripts tests
-	mypy app --disable-error-code=method-assign
+	mypy app scripts --disable-error-code=method-assign
 
 test:
 	pytest --cov=app --cov=scripts --cov-report html --cov-report term --cov-report lcov:lcov.info tests
