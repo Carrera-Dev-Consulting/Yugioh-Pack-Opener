@@ -87,7 +87,7 @@ def test_db_layer__when_adding_cards__associates_to_existing_sets(
                 .where(YugiohCardORM.external_id == 1)
             )
             .unique()
-            .scalars() 
+            .scalars()
             .all()
         )
     db_card = result[0]

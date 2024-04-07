@@ -1,6 +1,7 @@
 from contextlib import contextmanager
 from datetime import date
 from enum import Enum
+from logging import getLogger
 import time
 import json
 import os
@@ -8,7 +9,9 @@ from typing import IO, Any, Callable, Generator
 
 
 import requests
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
+
+logger = getLogger(__name__)
 
 
 class YGOProSet(BaseModel):
@@ -17,6 +20,13 @@ class YGOProSet(BaseModel):
     num_of_cards: int
     tcg_date: date | None = None
     set_image: str | None = None
+
+    @field_validator("tcg_date", mode="before")
+    @classmethod
+    def tcg_date_validator(cls, value: str):
+        if value == "0000-00-00":
+            return None
+        return value
 
 
 class YGOProSetReference(BaseModel):
@@ -112,8 +122,10 @@ class DirectoryCacher:
         flags = ["w"]
         if binary:
             flags.append("b")
-
-        with open(self._path_for_entry(cache_entry), "".join(flags)) as fp:
+        file_flags = "".join(flags)
+        file_path = self._path_for_entry(cache_entry)
+        logger.info(f"Opening file: {file_path} with Flags: {file_flags}")
+        with open(file_path, file_flags) as fp:
             yield fp
 
     def exists(self, cache_entry: str) -> bool:
