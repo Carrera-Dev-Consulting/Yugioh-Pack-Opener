@@ -130,6 +130,9 @@ class DirectoryCacher:
 
     def exists(self, cache_entry: str) -> bool:
         return os.path.exists(self._path_for_entry(cache_entry))
+    
+    def __contains__(self, cache_entry: str):
+        return self.exists(cache_entry)
 
     def read(self, cache_entry: str, as_json=False) -> str | dict | list:
         if not self.exists(cache_entry):
@@ -161,7 +164,7 @@ class YGOProAPIHandler:
             self.requests_made += 1
             return response
         else:
-            print("Sleeping for a bit to not overload YGOPro API...")
+            logger.info("Sleeping for 1.1 seconds to not overload the ygopro api...")
             self.sleep(1.1)  # this is set by the api not us
             self.requests_made = 0
             return self._make_request(path, **kwargs)
@@ -196,7 +199,7 @@ class YGOProAPIHandler:
 
     def get_cards(self):
         raw_response = self._get_or_cache_response(
-            "cards.json",
+            "api-responses/cards.json",
             "https://db.ygoprodeck.com/api/v7/cardinfo.php",
             lambda v: v["data"],
         )
@@ -215,7 +218,7 @@ class YGOProAPIHandler:
 
     def get_sets(self) -> list[YGOProSet]:
         raw_response = self._get_or_cache_response(
-            "card_sets.json",
+            "api-responses/card_sets.json",
             "https://db.ygoprodeck.com/api/v7/cardsets.php",
         )
         return [YGOProSet.model_validate(card_set) for card_set in raw_response]

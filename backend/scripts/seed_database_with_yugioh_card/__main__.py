@@ -40,11 +40,11 @@ def main(
     if db_url is None:
         db_url = server_config().mysql_url
     ensure_directory("cached")
-    ensure_directory(cache_directory)
-    ensure_directory(card_json_images_directory)
-    ensure_directory(set_images_directory)
+    ensure_directory(f"cached/{cache_directory}")
+    ensure_directory(f"cached/{card_json_images_directory}")
+    ensure_directory(f"cached/{set_images_directory}")
 
-    api_handler = YGOProAPIHandler("cached")
+    api_handler = YGOProAPIHandler(f"cached")
     card_sets = api_handler.get_sets()
     for card_set in card_sets:
         api_handler.save_set_images(card_set, set_images_directory)
