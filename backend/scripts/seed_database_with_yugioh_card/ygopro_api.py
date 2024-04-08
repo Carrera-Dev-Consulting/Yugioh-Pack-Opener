@@ -1,22 +1,32 @@
 from contextlib import contextmanager
 from datetime import date
 from enum import Enum
+from logging import getLogger
 import time
 import json
 import os
-from typing import IO, Any, Callable
+from typing import IO, Any, Callable, Generator
 
 
 import requests
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
+
+logger = getLogger(__name__)
 
 
-class YGoProSet(BaseModel):
+class YGOProSet(BaseModel):
     set_name: str
     set_code: str
     num_of_cards: int
     tcg_date: date | None = None
     set_image: str | None = None
+
+    @field_validator("tcg_date", mode="before")
+    @classmethod
+    def tcg_date_validator(cls, value: str):
+        if value == "0000-00-00":
+            return None
+        return value
 
 
 class YGOProSetReference(BaseModel):
@@ -96,9 +106,9 @@ def null_transform(response_body):
 
 
 class DirectoryCacher:
-    def __init__(self, directory) -> None:
+    def __init__(self, directory: str) -> None:
         self.directory = directory
-        self.computed_entries = {}
+        self.computed_entries: dict[str, Any] = {}
 
     def _path_for_entry(self, cache_entry: str):
         if cache_entry not in self.computed_entries:
@@ -106,20 +116,27 @@ class DirectoryCacher:
         return self.computed_entries[cache_entry]
 
     @contextmanager
-    def open_write_buffer(self, cache_entry, binary=False) -> IO[Any]:
+    def open_write_buffer(
+        self, cache_entry, binary=False
+    ) -> Generator[IO[Any], Any, None]:
         flags = ["w"]
         if binary:
             flags.append("b")
-
-        with open(self._path_for_entry(cache_entry), "".join(flags)) as fp:
+        file_flags = "".join(flags)
+        file_path = self._path_for_entry(cache_entry)
+        logger.info(f"Opening file: {file_path} with Flags: {file_flags}")
+        with open(file_path, file_flags) as fp:
             yield fp
 
     def exists(self, cache_entry: str) -> bool:
         return os.path.exists(self._path_for_entry(cache_entry))
 
+    def __contains__(self, cache_entry: str):
+        return self.exists(cache_entry)
+
     def read(self, cache_entry: str, as_json=False) -> str | dict | list:
         if not self.exists(cache_entry):
-            return None
+            return "{}" if as_json else {}
         print(f"Opening file: {self._path_for_entry(cache_entry)}")
         with open(self._path_for_entry(cache_entry), "r") as fp:
             if as_json:
@@ -147,7 +164,7 @@ class YGOProAPIHandler:
             self.requests_made += 1
             return response
         else:
-            print("Sleeping for a bit to not overload YGOPro API...")
+            logger.info("Sleeping for 1.1 seconds to not overload the ygopro api...")
             self.sleep(1.1)  # this is set by the api not us
             self.requests_made = 0
             return self._make_request(path, **kwargs)
@@ -156,8 +173,8 @@ class YGOProAPIHandler:
         if not url:
             return
 
-        if os.path.exists(localpath):
-            print("File already exists skipping...")
+        if self.cacher.exists(localpath):
+            logger.info(f"File: {localpath} already exists")
             return
 
         with self._make_request(url, stream=True) as response:
@@ -170,7 +187,7 @@ class YGOProAPIHandler:
         cache_file_name: str,
         api_path: str,
         transform_response: Callable[[dict | list], dict | list] = null_transform,
-    ) -> list | dict:
+    ) -> list | dict | str:
         if self.cacher.exists(cache_file_name):
             return self.cacher.read(cache_file_name, as_json=True)
 
@@ -182,7 +199,7 @@ class YGOProAPIHandler:
 
     def get_cards(self):
         raw_response = self._get_or_cache_response(
-            "cards.json",
+            "api-responses/cards.json",
             "https://db.ygoprodeck.com/api/v7/cardinfo.php",
             lambda v: v["data"],
         )
@@ -199,14 +216,14 @@ class YGOProAPIHandler:
                 image.image_url_small, f"{directory}/{card.id}-small.jpg"
             )
 
-    def get_sets(self) -> list[YGoProSet]:
+    def get_sets(self) -> list[YGOProSet]:
         raw_response = self._get_or_cache_response(
-            "card_sets.json",
+            "api-responses/card_sets.json",
             "https://db.ygoprodeck.com/api/v7/cardsets.php",
         )
-        return [YGoProSet.model_validate(card_set) for card_set in raw_response]
+        return [YGOProSet.model_validate(card_set) for card_set in raw_response]
 
-    def save_set_images(self, card_set: YGoProSet, directory: str):
+    def save_set_images(self, card_set: YGOProSet, directory: str):
         self._request_stream_to_file(
             card_set.set_image, f"{directory}/{card_set.set_code}.jpg"
         )

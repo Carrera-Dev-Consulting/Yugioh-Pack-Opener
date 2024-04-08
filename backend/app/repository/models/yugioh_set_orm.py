@@ -8,7 +8,9 @@ from .yugioh_card_orm import YugiohCardORM
 
 class YugiohSetORM(BaseSQLModel):
     __tablename__ = "yugioh_sets"
-    id = Column(String(36), primary_key=True, default=uuid.uuid4, nullable=False)
+    id = Column(
+        String(36), primary_key=True, default=lambda: str(uuid.uuid4()), nullable=False
+    )
     set_id = Column(String(255), nullable=False)
     name = Column(String(255), nullable=False)
     release_date = Column(Date, nullable=True)
