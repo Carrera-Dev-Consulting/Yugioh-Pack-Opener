@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 import functools
+from logging import getLogger
 from typing import Iterable, TypeVar, cast
 import sqlalchemy
 import sqlalchemy.orm
@@ -8,6 +9,8 @@ from app.repository.models import YugiohCardORM, YugiohSetORM, YugiohCardSetAsso
 from .ygopro_api import YGOProCard, YGOProSetReference, YGOProSet
 
 T = TypeVar("T")
+
+logger = getLogger(__name__)
 
 
 def iter_chunk_list(items: list[T], chunk_size: int) -> Iterable[list[T]]:
@@ -89,6 +92,8 @@ class DBLayer:
             cards = limit_cards_not_in_db(cards, session)
             orm_cards: dict[str, YugiohCardORM] = {}
             orm_sets = self.get_sets_from_database()
+            unique_cache = set()
+            logger.info(f"Found existing sets: {orm_sets}")
 
             for cards_chunk in iter_chunk_list(cards, 50):
                 for card in cards_chunk:
@@ -99,8 +104,19 @@ class DBLayer:
                 for card in cards_chunk:
                     orm_card = orm_cards[card.id]
                     for card_set in card.card_sets:
-                        orm_set = orm_sets.get(card_set.set_code)
+                        code = card_set.set_code
+                        if "-" in code:
+                            logger.debug(f"Splitting code: {code}")
+                            code = code.split("-")[0]
+                        orm_set = orm_sets.get(code)
+
+                        logger.debug(f"Found Set={orm_set} for code={code}")
                         if orm_set:
+                            if (orm_card.id, orm_set.id) in unique_cache:
+                                logger.warning("Duplicate entry for set")
+                                continue
+                            unique_cache.add((orm_card.id, orm_set.id))
+                            logger.debug("Creating Association")
                             association = create_card_set_association(
                                 card_set=card_set, orm_card=orm_card, orm_set=orm_set
                             )

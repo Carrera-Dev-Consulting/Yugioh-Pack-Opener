@@ -27,6 +27,7 @@ def timer(message: str):
 
 @click.command()
 @click.option("--skip-db", type=bool, default=False, is_flag=True)
+@click.option("--skip-images", type=bool, default=False, is_flag=True)
 @click.option("-d", "--db-url", type=str, required=False)
 @click.option("-c", "--cache-directory", default="api-responses")
 @click.option("-i", "--card-json-images-directory", default="cards")
@@ -35,6 +36,7 @@ def timer(message: str):
 def main(
     db_url: str,
     skip_db: bool,
+    skip_images: bool,
     cache_directory: str,
     card_json_images_directory: str,
     set_images_directory: str,
@@ -50,10 +52,14 @@ def main(
     api_handler = YGOProAPIHandler(f"cached")
     card_sets = api_handler.get_sets()
     for card_set in card_sets:
+        if skip_images:
+            break
         api_handler.save_set_images(card_set, set_images_directory)
 
     cards = api_handler.get_cards()
     for card in cards:
+        if skip_images:
+            break
         api_handler.save_card_images(card, card_json_images_directory)
 
     if skip_db:
@@ -61,7 +67,9 @@ def main(
         return
 
     db_layer = DBLayer.from_connection_string(db_url)
+    logger.info("Saving sets in the database")
     db_layer.save_sets_in_database(card_sets)
+    logger.info("Saving cards in the database")
     db_layer.save_cards_in_database(cards)
 
 
