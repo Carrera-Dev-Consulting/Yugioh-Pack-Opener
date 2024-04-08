@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 import datetime
+from logging import getLogger
 import click
 import os
 
@@ -7,6 +8,8 @@ from .db_layer import DBLayer
 from .ygopro_api import YGOProAPIHandler
 from app.config import server_config
 from app.services.logging import configure_logging
+
+logger = getLogger(__name__)
 
 
 def ensure_directory(path):
@@ -54,6 +57,7 @@ def main(
         api_handler.save_card_images(card, card_json_images_directory)
 
     if skip_db:
+        logger.info(f"Skipping Database insertion for url: {db_url}")
         return
 
     db_layer = DBLayer.from_connection_string(db_url)

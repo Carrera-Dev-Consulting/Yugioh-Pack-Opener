@@ -173,7 +173,7 @@ class YGOProAPIHandler:
         if not url:
             return
 
-        if os.path.exists(localpath):
+        if self.cacher.exists(localpath):
             logger.info(f"File: {localpath} already exists")
             return
 
