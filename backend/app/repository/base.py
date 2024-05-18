@@ -1,4 +1,7 @@
+from typing import Generic, TypeVar
 from sqlalchemy.orm import Session
+
+from app.models.base import Base
 
 
 class NotFoundException(Exception):
@@ -19,3 +22,11 @@ class Repository:
             return False
         else:
             self.session.commit()
+
+
+TModel = TypeVar("TModel")
+
+
+class QueryResult(Generic[TModel], Base):
+    results: list[TModel]
+    total: int
