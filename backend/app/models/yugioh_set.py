@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 import uuid
 from .base import Base
 
@@ -18,7 +18,7 @@ class YugiohSet(Base):
     id: uuid.UUID
     code: str
     name: str
-    release_date: datetime | None = None
+    release_date: date | None = None
     card_count: int = 0
     cards: list[YugiohCardInSet] = []
     image: SetImage | None = None

@@ -9,7 +9,7 @@ class CardStore:
         self.set_respository = set_repository
 
     def get_sets(
-        self, request: SetRequest, page_ops: PaginationOptions = None
+        self, request: SetRequest, page_ops: PaginationOptions | None = None
     ) -> PaginationResult[YugiohSet]:
         # defaults to what is in the options.
         page_ops = page_ops or PaginationOptions()

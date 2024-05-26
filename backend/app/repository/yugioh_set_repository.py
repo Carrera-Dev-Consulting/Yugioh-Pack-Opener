@@ -26,6 +26,12 @@ class SetRepository(Protocol):
     ) -> QueryResult[YugiohSet]:
         pass
 
+    def __enter__(self):
+        pass
+    
+    def __exit__(self, exc_type, exc_value, exc_tb):
+        pass
+
 
 class SetNotFound(NotFoundException):
     def __init__(self, set_id: uuid.UUID) -> None:
@@ -35,11 +41,11 @@ class SetNotFound(NotFoundException):
 
 def orm_to_model(orm: YugiohSetORM) -> YugiohSet:
     return YugiohSet(
-        id=orm.id,
-        name=orm.name,
+        id=uuid.UUID(orm.id),
+        name=cast(str, orm.name),
         release_date=orm.release_date,
-        code=orm.set_id,
-        card_count=orm.card_count,
+        code=orm.set_id or 'UNKNOWN',
+        card_count=cast(int, orm.card_count),
         cards=[],
         image=SetImage(
             regular_url=quote(f"/images/{orm.set_id}.jpg"),

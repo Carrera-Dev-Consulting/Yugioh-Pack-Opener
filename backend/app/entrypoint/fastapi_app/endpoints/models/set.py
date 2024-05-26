@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Annotated
+from typing import Annotated, cast
 
 from fastapi import Query
 from fastapi.exceptions import RequestValidationError
@@ -30,4 +30,4 @@ def set_request(
 ):
     if start_date and end_date and start_date > end_date:
         raise RequestValidationError(errors=["Start date must be less then end date."])
-    return SetRequest(set_ids=set_ids, end_date=end_date, start_date=start_date)
+    return SetRequest(set_ids=cast(list[str], set_ids), end_date=end_date, start_date=start_date)
