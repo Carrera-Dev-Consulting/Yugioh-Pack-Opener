@@ -1,14 +1,35 @@
+from datetime import date
 from typing import Protocol, cast
+from urllib.parse import quote
 import uuid
 from sqlalchemy.orm import joinedload
 
-from .base import NotFoundException, Repository
+from app.models.yugioh_set import SetImage
+
+from .base import NotFoundException, Repository, QueryResult
 from .models import YugiohSetORM
 from app.models import YugiohSet, YugiohCardInSet
 
 
 class SetRepository(Protocol):
     def get_set_by_id(self, set_id: uuid.UUID) -> YugiohSet:
+        pass
+
+    def get_sets(
+        self,
+        *,
+        offset: int,
+        limit: int,
+        start_date: date | None,
+        end_date: date | None,
+        set_ids: list[str],
+    ) -> QueryResult[YugiohSet]:
+        pass
+
+    def __enter__(self):
+        pass
+    
+    def __exit__(self, exc_type, exc_value, exc_tb):
         pass
 
 
@@ -18,7 +39,50 @@ class SetNotFound(NotFoundException):
         self.id = set_id
 
 
+def orm_to_model(orm: YugiohSetORM) -> YugiohSet:
+    return YugiohSet(
+        id=uuid.UUID(orm.id),
+        name=cast(str, orm.name),
+        release_date=orm.release_date,
+        code=orm.set_id or 'UNKNOWN',
+        card_count=cast(int, orm.card_count),
+        cards=[],
+        image=SetImage(
+            regular_url=quote(f"/images/{orm.set_id}.jpg"),
+        ),
+    )
+
+
 class YugiohSetRepository(Repository):
+    def get_sets(
+        self,
+        *,
+        offset: int,
+        limit: int,
+        start_date: date | None,
+        end_date: date | None,
+        set_ids: list[str],
+    ) -> QueryResult[YugiohSet]:
+
+        base_query = self.session.query(YugiohSetORM)
+
+        if start_date is not None:
+            base_query = base_query.filter(YugiohSetORM.release_date >= start_date)
+
+        if end_date is not None:
+            base_query = base_query.filter(YugiohSetORM.release_date <= end_date)
+
+        if set_ids:
+            base_query = base_query.filter(YugiohSetORM.id.in_(set_ids))
+
+        results = base_query.limit(limit).offset(offset).all()
+        total = base_query.count()
+
+        return QueryResult[YugiohSet](
+            results=[orm_to_model(orm_model) for orm_model in results],
+            total=total,
+        )
+
     def get_set_by_id(self, set_id: uuid.UUID) -> YugiohSet:
         set: YugiohSetORM | None = (
             self.session.query(YugiohSetORM)

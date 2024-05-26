@@ -1,5 +1,7 @@
 from enum import Enum
-from functools import cache, cached_property
+from functools import cache, cached_property, reduce
+import functools
+import operator
 from pydantic_settings import BaseSettings
 from pydantic.networks import MySQLDsn
 from secrets import token_hex
@@ -33,6 +35,12 @@ class ServerConfig(BaseSettings):
     mysql_port: int = 3306
     mysql_username: str = "root"
     mysql_password: str = "password"
+
+    def __hash__(self) -> int:
+        return reduce(
+            operator.xor,
+            (hash(getattr(self, item)) for item in self.model_fields),
+        )
 
     @cached_property
     def mysql_url(self) -> str:
